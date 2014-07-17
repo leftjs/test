@@ -3,7 +3,10 @@ AV.Cloud.define("hello", function(request, response) {
 });
 AV.Cloud.define("getItem", function(request, response) {
 	// User's location
-	var userGeoPoint = request.params.geoPoint;
+	var point = new AV.GeoPoint({
+		latitude : request.params.latitude,
+		longitude : request.params.longitude
+	});
 	var Items = AV.Object.extend("Item");
 	// Create a query for places
 	var query = new AV.Query(Items);
@@ -13,7 +16,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	// Final list of objects
 	query.find({
 		success : function(Items) {
-			response.success(Items[0].get("name") + "");
+			response.success(request.params.latitude + "");
 		}
 	});
 });
