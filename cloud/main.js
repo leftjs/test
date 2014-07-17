@@ -1,4 +1,3 @@
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>
 AV.Cloud.define("hello", function(request, response) {
 	response.success("测试成功");
 });
