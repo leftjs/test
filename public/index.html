@@ -17,6 +17,10 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!-- 百度地图外链-->
+		<!--	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>-->
+		<!-- 高德地图外链-->
+		<script src='http://webapi.amap.com/maps?v=1.3&key=b479ef221090d70865c1dd76fce0c276'></script>
 		<link rel="stylesheet" type="text/css" href="css/icons.css" />
 		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
 		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
@@ -27,8 +31,6 @@
 		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />
 		<script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>
-		<!-- 百度地图外链-->
-		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>
 		<script>
 			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
 				var script = document.createElement("script");
@@ -65,7 +67,68 @@
 				// 初始化 param1：应用 id、param2：应用 key
 				AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
 				$("#afui").get(0).className = 'ios7';
-				/**/
+				/*-----------------变量区--------------------------*/
+				var latitude = 0;
+				var longitude = 0;
+				/*-----------------初始化广告--------------------------*/
+				initAdvertise();
+				/*-----------------初始化地理位置--------------------------*/
+				//geolocation.getCurrentPosition();
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+				} else {
+					alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+				}
+
+			});
+
+			function successFunction(position) {
+				latitude = position.coords.latitude;
+				longitude = position.coords.longitude;
+				/*-----------------初始化商品--------------------------*/
+				AV.Cloud.run('getItem', {
+					"latitude" : latitude,
+					"longitude" : longitude
+				}, {
+					success : function(result) {
+						loadItem(result);
+					},
+					error : function(error) {
+						alert(error.message);
+					}
+				});
+			}
+
+			function errorFunction() {
+				alert("定位失败，请尝试手动输入或打开GPS并给予懒了足够的权限");
+			}
+
+			//加载新商品
+			function loadItem(Items) {
+				$("#main_panel ul li img")[0].src = Items[0].smallImage._url;
+				var $li = $("<li></li>");
+				var $img = $("<img></img>")
+				var $div = $("<div></div>")
+				var $p1 = $("<p></p>")
+				var $p2 = $("<p></p>")
+				var geo = new AV.GeoPoint({
+					latitude : latitude,
+					longitude : longitude
+				});
+				alert(geo.kilometersTo(Items[0].location));
+				var $span = ("<span>" + "距您" + radiansTo(Items[0].location) + "km" + "</span>")
+
+			}
+		</script>
+		<script>
+			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+				var script = document.createElement("script");
+				script.src = "plugins/af.desktopBrowsers.js";
+				var tag = $("head").append(script);
+			}
+		</script>
+		<script>
+			function initAdvertise() {
 				var ad = AV.Object.extend("Advertise");
 				var query = new AV.Query(ad);
 				query.descending("updatedAt");
@@ -83,43 +146,8 @@
 						alert("Error: " + error.code + " " + error.message);
 					}
 				});
-				AV.Cloud.run('getItem', {
-					"latitude" : 31.717531,
-					"longitude" : 118.787853
-				}, {
-					success : function(result) {
-						loadItem(result);
-					},
-					error : function(error) {
-						alert(error.message);
-					}
-				});
-			});
-			function loadItem(Items) {
-				$("#main_panel ul li img")[0].src = Items[0].smallImage._url;
-				var $li = $("<li></li>");
 			}
 		</script>
-		<script>
-			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-				var script = document.createElement("script");
-				script.src = "plugins/af.desktopBrowsers.js";
-				var tag = $("head").append(script);
-			}
-		</script>
-		<!--	<script type="text/javascript">
-		var geolocation = new BMap.Geolocation();
-		geolocation.getCurrentPosition(function(r) {
-		if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-		alert('您的位置：' + r.point.lng + ',' + r.point.lat);
-		} else {
-		alert('failed' + this.getStatus());
-		}
-		}, {
-		enableHighAccuracy : true
-		})
-		</script>-->
-
 		<style type="text/css">
 			#afui #user_panel {
 				background: #EBEBEB;
