@@ -3,7 +3,7 @@ AV.Cloud.define("hello", function(request, response) {
 });
 AV.Cloud.define("getItem", function(request, response) {
 	// User's location
-	var userGeoPoint = new AV.GeoPoint({
+	var point = new AV.GeoPoint({
 		latitude : request.params.latitude,
 		longitude : request.params.longitude
 	});
@@ -16,7 +16,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	// Final list of objects
 	query.find({
 		success : function(Items) {
-			response.success(request.params.latitude + "");
+			response.success(Items[0].get("name") + "");
 		}
 	});
 });
