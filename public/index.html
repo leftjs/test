@@ -83,15 +83,22 @@
 						alert("Error: " + error.code + " " + error.message);
 					}
 				});
-				AV.Cloud.run('hello', {}, {
+				AV.Cloud.run('getItem', {
+					"latitude" : 31.717531,
+					"longitude" : 118.787853
+				}, {
 					success : function(result) {
-						alert(result);
+						loadItem(result);
 					},
 					error : function(error) {
 						alert(error.message);
 					}
 				});
 			});
+			function loadItem(Items) {
+				$("#main_panel ul li img")[0].src = Items[0].smallImage._url;
+				var $li = $("<li></li>");
+			}
 		</script>
 		<script>
 			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
@@ -173,6 +180,20 @@
 			#afui.ios7 #header {
 				background: #5CC2D1;
 			}
+			#main_panel ul li {
+				height: 60px;
+				overflow: hidden;
+			}
+			#main_panel ul li img {
+				float: left;
+				height: 60px
+			}
+			#main_panel ul li div {
+				float: left;
+			}
+			#main_panel ul li div p span {
+				margin-left: 10px;
+			}
 		</style>
 	</head>
 
@@ -185,88 +206,26 @@
 					</div>
 					<img src="images/sort.png" style="width: 100%; margin-top: -25px;"/>
 					<ul>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
+						<li>
+							<img src="images/noodle.png" />
+							<div>
 								<p>
 									康师傅红烧牛肉面
 								</p>
 								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
+									中山路118号<span>距您13km</span>
 								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px" />
 							</div>
 						</li>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
+						<li>
+							<img src="images/noodle.png" />
+							<div>
 								<p>
 									康师傅红烧牛肉面
 								</p>
 								<p>
 									中山路118号<span style="margin-left: 10px;">距您13km</span>
 								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px"/>
-							</div>
-						</li>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
-								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px"/>
-							</div>
-						</li>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
-								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px"/>
-							</div>
-						</li>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
-								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px"/>
-							</div>
-						</li>
-						<li style="height: 60px;overflow: hidden;">
-							<img src="images/noodle.png" style="float: left;height: 60px" />
-							<div style="float: left;">
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
-								</p>
-							</div>
-							<div style="float: right;">
-								<img src="images/comment.png" style="height: 60px"/>
 							</div>
 						</li>
 					</ul>
