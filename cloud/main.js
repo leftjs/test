@@ -4,7 +4,7 @@ AV.Cloud.define("hello", function(request, response) {
 AV.Cloud.define("getItem", function(request, response) {
 	// User's location
 	var userGeoPoint = request.params.geoPoint;
-	var items = AV.Object.extend("Items");
+	var Items = AV.Object.extend("Item");
 	// Create a query for places
 	var query = new AV.Query(items);
 	// Interested in locations near user.
