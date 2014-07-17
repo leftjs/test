@@ -14,7 +14,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	query.limit(10);
 	// Final list of objects
 	query.find({
-		success : function(items) {
+		success : function(Items) {
 			response.success("成功");
 		}
 	});
