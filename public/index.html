@@ -1,1 +1,331 @@
-Congrats, you just set up your cloud code project.
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+	<head>
+		<script>
+			(function() {
+				if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+					var msViewportStyle = document.createElement("style");
+					msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
+					document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+				}
+			})();
+		</script>
+		<title>懒了</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="stylesheet" type="text/css" href="css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/light/light.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/dark/dark.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/bar/bar.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />
+		<script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>
+		<!-- 百度地图外链-->
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>
+		<script>
+			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+				var script = document.createElement("script");
+				script.src = "plugins/af.desktopBrowsers.js";
+				var tag = $("head").append(script);
+			}
+		</script>
+		<!--项目中常用的一些插件-->
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+		<script type="text/javascript" src="scripts/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript" src="jquery.nivo.slider.js"></script>
+		<!--	<script text="text/javascript" src="cordova.js"></script>-->
+		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			// 等待PhoneGap加载
+			//	document.addEventListener("deviceready", onDeviceReady, false);
+			// 加载完成
+			$(document).ready(function() {
+				// 初始化 param1：应用 id、param2：应用 key
+				AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
+				$("#afui").get(0).className = 'ios7';
+				/**/
+				var ad = AV.Object.extend("Advertise");
+				var query = new AV.Query(ad);
+				query.descending("updatedAt");
+				query.limit(4);
+				query.find({
+					success : function(results) {
+						for (var i = 0; i < results.length; i++) {
+							var $img = $("<img></img>");
+							$img.attr("src", results[i].get("picture").url());
+							$("#slider").append($img);
+						}
+						$('#slider').nivoSlider();
+					},
+					error : function(error) {
+						alert("Error: " + error.code + " " + error.message);
+					}
+				});
+				AV.Cloud.run('hello', {}, {
+					success : function(result) {
+						alert(result);
+					},
+					error : function(error) {
+						alert(error.message);
+					}
+				});
+			});
+		</script>
+		<script>
+			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+				var script = document.createElement("script");
+				script.src = "plugins/af.desktopBrowsers.js";
+				var tag = $("head").append(script);
+			}
+		</script>
+		<!--	<script type="text/javascript">
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r) {
+		if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+		alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+		} else {
+		alert('failed' + this.getStatus());
+		}
+		}, {
+		enableHighAccuracy : true
+		})
+		</script>-->
+
+		<style type="text/css">
+			#afui #user_panel {
+				background: #EBEBEB;
+			}
+			#afui .list {
+				background-color: #F7F7F7;
+			}
+			#user_panel #loginRegion {
+				margin-top: 10px;
+				height: 200px;
+				padding-top: 50px;
+				background: url(images/panpanda.jpg);
+				background-size: 100% 100%;
+			}
+			#user_options {
+				margin-top: 10px !important;
+			}
+			#social_options {
+				margin-top: 20px !important;
+			}
+			#loginButton {
+				text-align: center;
+				padding-top: 20px;
+				width: 300px;
+				height: 100px;
+				background: #F3F5F4;
+				background-size: 100% 100%;
+				margin: 0 auto;
+				opacity: 0.7;
+				filter: alpha(opacity=50)
+			}
+			#shopping_cart_panel img {
+				display: block;
+				width: 100%;
+			}
+			.float_left {
+				float: left;
+			}
+			.float_right {
+				float: right;
+			}
+			.clear {
+				clear: both;
+			}
+			#afui #main_panel {
+				background: #FFFFFF
+			}
+			#afui #menu_scroller {
+				height: 100%;
+				background: #22252A;
+			}
+			nav ul li {
+				background: #22252A;
+			}
+			#afui.ios7 #menu .list li:first-child {
+				border-bottom-color: #41464A;
+			}
+			#afui.ios7 #header {
+				background: #5CC2D1;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="afui" class="bb">
+			<div id="content">
+				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
+					<div class="slider-wrapper theme-default">
+						<div id="slider" class="nivoSlider"></div>
+					</div>
+					<img src="images/sort.png" style="width: 100%; margin-top: -25px;"/>
+					<ul>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px" />
+							</div>
+						</li>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px"/>
+							</div>
+						</li>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px"/>
+							</div>
+						</li>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px"/>
+							</div>
+						</li>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px"/>
+							</div>
+						</li>
+						<li style="height: 60px;overflow: hidden;">
+							<img src="images/noodle.png" style="float: left;height: 60px" />
+							<div style="float: left;">
+								<p>
+									康师傅红烧牛肉面
+								</p>
+								<p>
+									中山路118号<span style="margin-left: 10px;">距您13km</span>
+								</p>
+							</div>
+							<div style="float: right;">
+								<img src="images/comment.png" style="height: 60px"/>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
+					<div id="loginRegion">
+						<div id="loginButton">
+							<a class="button">登录</a>
+						</div>
+					</div>
+					<ul id="user_options" class="list inset" >
+						<li>
+							<a href="#home">我的订单</a>
+						</li>
+						<li>
+							<a href="#home">账户余额</a>
+						</li>
+						<li>
+							<a href="#home">抵用券</a>
+						</li>
+						<li>
+							<a href="#home">我的收藏</a>
+						</li>
+					</ul>
+					<ul id="social_options" class="list inset">
+						<li>
+							<a href="#home">用户反馈</a>
+						</li>
+						<li>
+							<a href="#home">分享好友</a>
+						</li>
+					</ul>
+				</div>
+				<header id="topBar">
+					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png"style="width: 45px;height: 45px;" /></a>
+					<h1>懒了</h1>
+				</header>
+				<nav>
+					<div style="height: 200px;width:200px;background: #272C30;">
+						<img src="images/userhead.png" style="height: 100px;width: 100px;
+						margin:20px 50px 0px;"/>
+						<p style="color:white;font-size: 25px;text-align: center;">
+							付某人
+						</p>
+						<p style="color:white;font-size: 15px;text-align: center;">
+							人生是如此的慵懒
+						</p>
+
+					</div>
+					<ul class="list">
+						<li>
+							<a href="#main_panel">推荐</a>
+						</li>
+						<li>
+							<a href="#user_panel">用户中心</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</body>
+</html>
