@@ -7,8 +7,6 @@ AV.Cloud.define("getItem", function(request, response) {
 	var Items = AV.Object.extend("Item");
 	// Create a query for places
 	var query = new AV.Query(Items);
-	// Interested in locations near user.
-	query.near("location", userGeoPoint);
 	query.withinKilometers("location", userGeoPoint, 2);
 	// Limit what could be a lot of points.
 	query.limit(10);
