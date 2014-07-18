@@ -79,7 +79,6 @@
 				} else {
 					alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
 				}
-
 			});
 
 			function successFunction(position) {
@@ -103,21 +102,27 @@
 				alert("定位失败，请尝试手动输入或打开GPS并给予懒了足够的权限");
 			}
 
-			//加载新商品
+			//加载商品
 			function loadItem(Items) {
 				$("#main_panel ul li img")[0].src = Items[0].smallImage._url;
-				var $li = $("<li></li>");
-				var $img = $("<img></img>")
-				var $div = $("<div></div>")
-				var $p1 = $("<p></p>")
-				var $p2 = $("<p></p>")
 				var geo = new AV.GeoPoint({
 					latitude : latitude,
 					longitude : longitude
 				});
-				alert(geo.kilometersTo(Items[0].location));
-				var $span = ("<span>" + "距您" + radiansTo(Items[0].location) + "km" + "</span>")
-
+				var $span = ("<span>" + "距您" + geo.kilometersTo(Items[0].location).toFixed(2) + "km" + "</span>")
+				var $p2 = $("<p></p>");
+				$p2.append("计算");
+				$p2.append($span);
+				var $p1 = $("<p></p>");
+				$p1.append(Items[0].name);
+				var $div = $("<div></div>");
+				$div.append($p1, $p2);
+				var $img = $("<img></img>");
+				$img.attr("src", Items[0].smallImage._url);
+				var $li = $("<li></li>");
+				$li.append($img, $div);
+				alert($li.html());
+				$("#main_panel ul").append($li);
 			}
 		</script>
 		<script>
@@ -233,7 +238,7 @@
 						<div id="slider" class="nivoSlider"></div>
 					</div>
 					<img src="images/sort.png" style="width: 100%; margin-top: -25px;"/>
-					<ul>
+					<ul style="list-style-type:none">
 						<li>
 							<img src="images/noodle.png" />
 							<div>
