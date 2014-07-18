@@ -20,7 +20,7 @@
 		<!-- 百度地图外链-->
 		<!--	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>-->
 		<!-- 高德地图外链-->
-		<script src='http://webapi.amap.com/maps?v=1.3&key=b479ef221090d70865c1dd76fce0c276'></script>
+		<!--	<script src='http://webapi.amap.com/maps?v=1.3&key=b479ef221090d70865c1dd76fce0c276'></script>-->
 		<link rel="stylesheet" type="text/css" href="css/icons.css" />
 		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
 		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
@@ -104,7 +104,6 @@
 
 			//加载商品
 			function loadItem(Items) {
-				$("#main_panel ul li img")[0].src = Items[0].smallImage._url;
 				var geo = new AV.GeoPoint({
 					latitude : latitude,
 					longitude : longitude
@@ -114,6 +113,7 @@
 				$p2.append("计算");
 				$p2.append($span);
 				var $p1 = $("<p></p>");
+				$p1.css("font-size", "25px");
 				$p1.append(Items[0].name);
 				var $div = $("<div></div>");
 				$div.append($p1, $p2);
@@ -121,7 +121,6 @@
 				$img.attr("src", Items[0].smallImage._url);
 				var $li = $("<li></li>");
 				$li.append($img, $div);
-				alert($li.html());
 				$("#main_panel ul").append($li);
 			}
 		</script>
@@ -214,12 +213,12 @@
 				background: #5CC2D1;
 			}
 			#main_panel ul li {
-				height: 60px;
+				height: 80px;
 				overflow: hidden;
 			}
 			#main_panel ul li img {
 				float: left;
-				height: 60px
+				height: 80px
 			}
 			#main_panel ul li div {
 				float: left;
@@ -238,30 +237,7 @@
 						<div id="slider" class="nivoSlider"></div>
 					</div>
 					<img src="images/sort.png" style="width: 100%; margin-top: -25px;"/>
-					<ul style="list-style-type:none">
-						<li>
-							<img src="images/noodle.png" />
-							<div>
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span>距您13km</span>
-								</p>
-							</div>
-						</li>
-						<li>
-							<img src="images/noodle.png" />
-							<div>
-								<p>
-									康师傅红烧牛肉面
-								</p>
-								<p>
-									中山路118号<span style="margin-left: 10px;">距您13km</span>
-								</p>
-							</div>
-						</li>
-					</ul>
+					<ul style="list-style-type:none"></ul>
 				</div>
 				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
 					<div id="loginRegion">
@@ -306,7 +282,6 @@
 						<p style="color:white;font-size: 15px;text-align: center;">
 							人生是如此的慵懒
 						</p>
-
 					</div>
 					<ul class="list">
 						<li>
