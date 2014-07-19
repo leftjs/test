@@ -153,6 +153,10 @@
 					}
 				});
 			}
+
+			function buy() {
+				alert("执行");
+			}
 		</script>
 		<style type="text/css">
 			#afui #user_panel {
@@ -245,18 +249,40 @@
 			#afui.ios7 #menu .list a {
 				color: #383B40;
 			}
+			#afui .panel {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
 		</style>
 	</head>
-
 	<body>
 		<div id="afui" class="bb">
 			<div id="content">
+				<!------------------------------------------------------主页------------------------------------------------------------>
 				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
 					<div class="slider-wrapper theme-default">
 						<div id="slider" class="nivoSlider"></div>
 					</div>
-					<ul style="list-style-type:none"></ul>
+					<ul style="list-style-type:none">
+						<li>
+							<a href="#buy_panel" style="display: block;"> <img src="images/pie.png" />
+							<div>
+								<p>
+									辣汤鸡
+								</p>
+								<p>
+									天盛<span>距您13km</span>
+								</p>
+							</div> </a>
+						</li>
+					</ul>
 				</div>
+				<!------------------------------------------------------购买------------------------------------------------------------>
+				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="topBar">
+					<a style="display: block;"><img src="images/back.png" /></a>
+					<img src="images/chiken.jpg" style="width: 200px;height: 200px;margin:auto;display: block;" />
+				</div>
+				<!------------------------------------------------------用户中心------------------------------------------------------------>
 				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
 					<div id="loginRegion">
 						<div id="loginButton">
@@ -286,10 +312,12 @@
 						</li>
 					</ul>
 				</div>
+				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
 					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png"style="width: 45px;height: 45px;" /></a>
 					<h1>懒了</h1>
 				</header>
+				<!------------------------------------------------------导航------------------------------------------------------------>
 				<nav>
 					<div style="height: 200px;width:200px;background: #272C30;">
 						<img src="images/userhead.png" style="height: 100px;width: 100px;
