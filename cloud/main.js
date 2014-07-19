@@ -13,7 +13,6 @@ AV.Cloud.define("getItem", function(request, response) {
 	query.withinKilometers("location", userGeoPoint, 6);
 	// Limit what could be a lot of points.
 	query.limit(10);
-	// Final list of objects
 	query.find({
 		success : function(Items) {
 			response.success(Items);
