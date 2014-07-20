@@ -1,302 +1,358 @@
 <!DOCTYPE html>
 <!--HTML5 doctype-->
 <html>
-    <head>        
-    	<script>
+	<head>
+		<script>
 			(function() {
 				if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
 					var msViewportStyle = document.createElement("style");
-					msViewportStyle.appendChild(
-						document.createTextNode("@-ms-viewport{width:auto!important}")
-					);
+					msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
 					document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 				}
 			})();
 		</script>
-        <title>phonegap中文网</title>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />        
-        <link rel="stylesheet" type="text/css" href="css/icons.css" />    
- 		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />         
-        <link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />         
-        <script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>        
-    	<script>           
-            if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-                var script = document.createElement("script");
-                script.src = "plugins/af.desktopBrowsers.js";
-                var tag = $("head").append(script);
-            }
-        </script>
-        <!--项目中常用的一些插件-->
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
-
-        <script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
-        <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->            
-        
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
-        <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
-        
-        <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>    
-        
-        <script type="text/javascript" charset="utf-8" src="common.js"></script>  
-        <script type="text/javascript" charset="utf-8" src="basic.js"></script>
-        
-        
-        <script>
-        	$.ui.ready(function(){ 
-				$("#afui").get(0).className='bb'; //设置属于那种风格 
+		<title>懒了</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!-- 百度地图外链-->
+		<!--	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>-->
+		<!-- 高德地图外链-->
+		<!--	<script src='http://webapi.amap.com/maps?v=1.3&key=b479ef221090d70865c1dd76fce0c276'></script>-->
+		<link rel="stylesheet" type="text/css" href="css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/light/light.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/dark/dark.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="themes/bar/bar.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />
+		<script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>
+		<script>
+			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+				var script = document.createElement("script");
+				script.src = "plugins/af.desktopBrowsers.js";
+				var tag = $("head").append(script);
+			}
+		</script>
+		<!--项目中常用的一些插件-->
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+		<script type="text/javascript" src="scripts/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript" src="jquery.nivo.slider.js"></script>
+		<!--	<script text="text/javascript" src="cordova.js"></script>-->
+		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			// 等待PhoneGap加载
+			//	document.addEventListener("deviceready", onDeviceReady, false);
+			// 加载完成
+			$(document).ready(function() {
+				// 初始化 param1：应用 id、param2：应用 key
+				AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
+				$("#afui").get(0).className = 'ios7';
+				/*-----------------变量区--------------------------*/
+				var latitude = 0;
+				var longitude = 0;
+				/*-----------------初始化广告--------------------------*/
+				initAdvertise();
+				/*-----------------初始化地理位置--------------------------*/
+				//geolocation.getCurrentPosition();
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+				} else {
+					alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+				}
 			});
-			            
-            var webRoot = "./";   //定义网站的根目录
-            // $.os.android=true;
-            $.ui.autoLaunch = false;
-            $.ui.openLinksNewTab = false;
-            //$.ui.resetScrollers=false;
-            //这句话要加上
-            $(document).ready(function(){
-                   $.ui.launch();
-				   getPortalCate();  //获取文章分类
-				   getThreadCate();  //获取帖子分类
-
-            });            
-            /* This code is used to run as soon as appMobi activates */
-            var onDeviceReady = function () {
-                AppMobi.device.setRotateOrientation("portrait");
-                AppMobi.device.setAutoRotate(false);
-                webRoot = AppMobi.webRoot + "";
-                //hide splash screen
-                AppMobi.device.hideSplashScreen();
-                $.ui.blockPageScroll(); //block the page from scrolling at the header/footer
-                $.ui.launch();
-
-            };
-            document.addEventListener("intel.xdk.device.ready", onDeviceReady, false);
-			
-			
-			//切换显示隐藏
-            function showHide(obj, objToHide) {
-                var el = $("#" + objToHide)[0];
-
-                if (obj.className == "expanded") {
-                    obj.className = "collapsed";
-                } else {
-                    obj.className = "expanded";
-                }
-                $(el).toggle();
-
-            }
-        </script>
-   
-</head>
-
-    <body>
-        <div id="afui" class="bb">
-        	<div id="content">
-            	
-                <!--站长资讯-->
-                <div title='站长资讯' id="main_panel" class="panel" selected="true" data-tab="navbar_home" data-footer="footerui" data-header="headerui">
-                 
-                  <h2 class='expanded' onclick='showHide(this,"main_info");'>PhoneGap中文网</h2>
-
-                    <p id='main_info'>PhoneGap中文网是国内最大的跨平台移动互联网软件开发中文门户网之一，提供JqueryMobile教程 phonegap教程 senchar视频教程下载学习</p>
-                    <ul class="listview" id="portalCateList">                        
-                       
-                    </ul>
-                </div>  
-                
-                 <!--资讯列表-->
-                <div title='资讯列表' data-load="article_list_load" data-unload='article_list_unload' id="article_list_panel" class="panel" data-tab="navbar_home" data-footer="footerui" data-header="headerui">
-                 
-                 
-                    <ul class="listview article_list" id="articleList">                        
-                      
-                     
-                    </ul>
-                    <p><a class="button block" id="articleListButton" onClick="articleListmore();">点击加载更多</a></p> 
-                </div>  
-                
-                
-                
-                
-                
-                 <!--站长论坛-->
-                <div title='站长论坛' id="forum_panel" class="panel" data-tab="navbar_forum" data-footer="footerui" data-header="headerui" data-nav="forum_nav">
-                 	<ul class="listview" id="listForumCate">
-                         
-                      
-                    </ul>                
-                 
-                </div>  
-                
-                 <!--帖子列表-->
-                <div title='帖子列表' id="forum_list_panel" data-load="list_panel_load" data-unload='list_panel_unload' class="panel" data-tab="navbar_forum" data-footer="footerui" data-header="headerui" data-nav="forum_nav">                 
-                  <ul class="listview article_list" id="threadList">                        
-                       
-                        111
-                  </ul>
-                  <p><a class="button block" id="threadListButton" onClick="threadListmore();">点击加载更多</a></p> 
-                </div>  
-                
-                
-                
-                 <!--用户中心-->
-                <div title='用户中心' id="user_panel" class="panel" data-tab="navbar_user" data-footer="footerui" data-header="headerui">
-               	  <p class="center top10">
-                    	您需要登录才能使用用户中心的功能
-                  </p>                  
-                   <p class="center">
-                    	<a class="button login_button" href="javascript:showPopupLogin();">立即登录</a>            </p>
-                    <p>与我相关：</p>
-                    <ul class="list inset">
-                        <li>
-                            <a href="#" data-ignore="True" class="icon question">我要提问</a>
-                        </li>
-                        <li>
-                            <a href="#" data-ignore="True" class="icon chat">我的帖子</a>
-                        </li>                 
-                    </ul>
-                    <p>账户：</p>
-                    <ul class="list inset">
-                        <li>
-                            <a href="http://www.phonegap100.com/member.php?mod=register_phonegap" data-ignore="True" class="icon user">注册账户</a>
-                        </li>
-                        <li>
-                            <a href="http://www.phonegap100.com" data-ignore="True"  class="icon key">修改密码</a>
-                        </li>                 
-                    </ul>
-                    <p>其他：</p>
-                    <ul class="list inset">
-                        <li>
-                            <a href="http://www.phonegap100.com" data-ignore="True" class="icon cloud">phonegap中文网</a>
-                        </li>
-                        <li>
-                            <a href="http://www.phonegap100.com" data-ignore="True"  class="icon info">关于我们</a>
-                        </li>                 
-                    </ul>                        
-                        
-                </div>      
-                
-                
-                <div title='发帖' id="forum_post_panel" class="panel" data-tab="navbar_user" data-footer="footerui" data-header="headerui">
-               	 	<div class="formGroupHead">发帖</div>            
-                    <form>
-                    <div class="input-group">                   
-                        <input type="text" id="post_title" placeholder="帖子标题">           
-                         <select id="post_select" class="post_select" style="-webkit-appearance: listbox;" >
-                            <option value="0">帖子分类</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>             
-                        <textarea id="post_content" rows="6" placeholder="帖子内容"></textarea>
-                        <input style="float:right;" class="button" type="button" name="post_button" id="post_button" value="确定发表" />
-                    </div>
-                </form>    
-                </div> 
-                   
-                
-                
-                
-                <!--header-->
-                <header id="headerui">
-                     <a style="float:left;" onclick='af.ui.toggleSideMenu()' class='menuButton'></a>               
-                     <h1>phonegap中文网</h1>
-                     <a  href='#forum_post_panel' style="float:right;padding:8px 5px 0px 0px; color:#fff; border:none; text-decoration:none;" class="icon pencil big">发帖</a>
-                </header>
-                 <!--footer-->
-                 <footer id='footerui'>
-                    <a href="#main_panel" id='navbar_home' class='icon message'>站长资讯 </a>                	<a href='#forum_panel' id="navbar_forum" class='icon chat'>站长论坛</a>
-                    <a href='#user_panel' id="navbar_user" class='icon user'>用户中心</a>        
-                </footer> 
-                
-                 <nav>
-                    <ul class="list side_nav">
-                        <li><a href="#main_panel">首页</a></li>
-                        <li><a href="#home">视频教程</a></li>
-                        <li><a href="#home">PhoneGap平台资讯</a></li>
-                        <li><a href="#home">移动互联网</a></li>
-                        <li><a href="#home">PhoneGap资讯</a></li>
-                        <li><a href="#home">赞助视频教程</a></li> 
-                    </ul>
-                </nav>
-                
-                <nav id="forum_nav">
-                    <ul class="list side_nav">
-                            <li><a href="#main_panel">首页</a></li>
-                            <li class="divider">PhoneGap开发资</li>
-                                    <li>
-                                        
-                                        <a href="#aftransitions">PhoneGap 新手入门
-                                        </a>
-                                    </li>
-                                    <li>
-                                        
-                                        <a href="#afuidemo">PhoneGap 免费视频 </a>
-                                    </li>
-                                    <li>                                	
-                                        <a href="#uiapi">PhoneGap API</a>
-                                    </li>
-                                    <li>                                	
-                                        <a href="#uiapi">PhoneGap 开发享</a>
-                                    </li>
-                                <li class="divider">Sencha Touch 专区</li>
-                                    <li>                                	
-                                        <a href="#aftransitions">PhoneGap 新手入门区</a>
-                                    </li>
-                                    <li>	                               
-                                        <a href="#afuidemo">Sencha Tou</a>
-                                    </li>
-                                    <li>                                	
-                                        <a href="#afuidemo">Sencha Touch </a>
-                                    </li>
-                                   
-                                <li class="divider">html5/js/jquer</li>
-                                    <li>
-                                        <a href="#aftransitions">html5/css</a>
-                                    </li>
-                                    <li>
-                                        <a href="#afuidemo">jquery mobile </a>
-                                    </li>
-                                    <li>
-                                        <a href="#afuidemo">项目案例区</a>
-                                    </li>               
-                      
-                    </ul>
-                </nav>
-                
-                
-                
-            </div>        	
-	    </div>
-         <script type="text/javascript">
-            function showPopupLogin() {
-				$("#afui").popup({
-					title: "用户登录",
-					message: "用户名: <input type='text' class='af-ui-forms'><br>密码: <input type='text' class='af-ui-forms' style='webkit-text-security:disc'><br>邮箱: <input id='email' type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
-					cancelText: "取消",
-					cancelCallback: function () {},
-					doneText: "登录",
-					doneCallback: function () {
-						//处理登录的一些操作
-						alert("登录中")
+			function successFunction(position) {
+				latitude = position.coords.latitude;
+				longitude = position.coords.longitude;
+				/*-----------------初始化商品--------------------------*/
+				AV.Cloud.run('getItem', {
+					"latitude" : latitude,
+					"longitude" : longitude
+				}, {
+					success : function(result) {
+						loadItem(result);
 					},
-					cancelOnly: false
+					error : function(error) {
+						alert(error.message);
+					}
 				});
 			}
-        </script>
-    </body>
+
+			function errorFunction() {
+				alert("定位失败，请尝试手动输入或打开GPS并给予懒了足够的权限");
+			}
+
+			//加载商品
+			function loadItem(Items) {
+				var geo = new AV.GeoPoint({
+					latitude : latitude,
+					longitude : longitude
+				});
+				for ( i = 0; i < Items.length; i++) {
+					var $span = ("<span>" + "距您" + geo.kilometersTo(Items[0].location).toFixed(2) + "km" + "</span>");
+					var $p2 = $("<p></p>");
+					$p2.attr("class", "item_description")
+					$p2.append(Items[0].shopName, $span);
+					var $p1 = $("<p></p>");
+					$p1.css("font-size", "25px");
+					$p1.append(Items[0].name);
+					var $div = $("<div></div>");
+					$div.append($p1, $p2);
+					var $img = $("<img></img>");
+					$img.attr("src", Items[0].smallImage._url);
+					var $li = $("<li></li>");
+					var $a = $("<a></a>");
+					$a.append($img, $div);
+					$a.attr("href", "#buy_panel");
+					$a.attr("onclick", "test");
+					$li.append($a);
+					$("#main_panel ul").append($li);
+				}
+			}
+		</script>
+		<script>
+			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+				var script = document.createElement("script");
+				script.src = "plugins/af.desktopBrowsers.js";
+				var tag = $("head").append(script);
+			}
+		</script>
+		<script>
+			function initAdvertise() {
+				var ad = AV.Object.extend("Advertise");
+				var query = new AV.Query(ad);
+				query.descending("updatedAt");
+				query.limit(4);
+				query.find({
+					success : function(results) {
+						for (var i = 0; i < results.length; i++) {
+							var $img = $("<img></img>");
+							$img.attr("src", results[i].get("picture").url());
+							$("#slider").append($img);
+						}
+						$('#slider').nivoSlider();
+					},
+					error : function(error) {
+						alert("Error: " + error.code + " " + error.message);
+					}
+				});
+			}
+		</script>
+		<style type="text/css">
+			#afui #user_panel {
+				background: #EBEBEB;
+			}
+			#afui .list {
+				background-color: #F7F7F7;
+			}
+			#user_panel #loginRegion {
+				margin-top: 10px;
+				height: 200px;
+				padding-top: 50px;
+				background: url(images/panpanda.jpg);
+				background-size: 100% 100%;
+			}
+			#user_options {
+				margin-top: 10px !important;
+			}
+			#social_options {
+				margin-top: 20px !important;
+			}
+			#loginButton {
+				text-align: center;
+				padding-top: 20px;
+				width: 300px;
+				height: 100px;
+				background: #F3F5F4;
+				background-size: 100% 100%;
+				margin: 0 auto;
+				opacity: 0.7;
+				filter: alpha(opacity=50)
+			}
+			#shopping_cart_panel img {
+				display: block;
+				width: 100%;
+			}
+			.float_left {
+				float: left;
+			}
+			.float_right {
+				float: right;
+			}
+			.clear {
+				clear: both;
+			}
+			#afui #main_panel {
+				background: #FFFFFF
+			}
+			#afui #menu_scroller {
+				height: 100%;
+				background: #22252A;
+			}
+			nav ul li {
+				background: #22252A;
+				font-size: 25px;
+			}
+			#afui.ios7 #menu .list li {
+				border-bottom-color: #41464A;
+			}
+
+			#afui.ios7 #header {
+				background: #5CC2D1;
+			}
+			#main_panel ul li {
+				height: 80px;
+				overflow: hidden;
+			}
+			#main_panel ul li img {
+				float: left;
+				height: 80px
+			}
+			#main_panel ul li a {
+				display: block;
+				height: 80px;
+			}
+			#main_panel ul li div {
+				float: left;
+			}
+			#main_panel ul li div p span {
+				margin-left: 15px;
+				margin-left: 5px;
+			}
+			#afui p.item_description {
+				margin-top: 25px;
+				margin-left: 5px;
+			}
+			#afui #menu .list > li > a {
+				font-size: 25px;
+				font-family: "黑体";
+			}
+			#afui #menu .list > li {
+				color: #383B40;
+			}
+			#afui.ios7 #menu .list a {
+				color: #383B40;
+			}
+			#afui .panel {
+				padding-left: 0px;
+				padding-right: 0px;
+			}
+			a {
+				text-decoration: none;
+				color: #000000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="afui" class="bb">
+			<div id="content">
+				<!------------------------------------------------------主页------------------------------------------------------------>
+				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
+					<div class="slider-wrapper theme-default">
+						<div id="slider" class="nivoSlider"></div>
+					</div>
+					<ul style="list-style-type:none">
+						<li>
+							<a href="itemContent.html" onclick="alert(2);"> <img src="images/pie.png" />
+							<div>
+								<p>
+									辣汤鸡
+								</p>
+								<p>
+									天盛<span>距您13km</span>
+								</p>
+							</div> </a>
+						</li>
+					</ul>
+				</div>
+
+				<!------------------------------------------------------购买------------------------------------------------------------>
+				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="topBar">
+					<a style="display: block;"><img src="images/back.png" /></a>
+					<img src="images/chiken.jpg" style="width: 200px;height: 200px;margin:auto;display: block;" />
+				</div>
+				<!------------------------------------------------------用户中心------------------------------------------------------------>
+				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
+					<div id="loginRegion">
+						<div id="loginButton">
+							<a class="button">登录</a>
+						</div>
+					</div>
+					<ul id="user_options" class="list inset" >
+						<li>
+							<a href="#home">我的订单</a>
+						</li>
+						<li>
+							<a href="#home">账户余额</a>
+						</li>
+						<li>
+							<a href="#home">抵用券</a>
+						</li>
+						<li>
+							<a href="#home">我的收藏</a>
+						</li>
+					</ul>
+					<ul id="social_options" class="list inset">
+						<li>
+							<a href="#home">用户反馈</a>
+						</li>
+						<li>
+							<a href="#home">分享好友</a>
+						</li>
+					</ul>
+				</div>
+				<!------------------------------------------------------头部------------------------------------------------------------>
+				<header id="topBar">
+					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png"style="width: 45px;height: 45px;" /></a>
+					<h1>懒了</h1>
+				</header>
+				<!------------------------------------------------------导航------------------------------------------------------------>
+				<nav>
+					<div style="height: 200px;width:200px;background: #272C30;">
+						<img src="images/userhead.png" style="height: 100px;width: 100px;
+						margin:20px 50px 0px;"/>
+						<p style="color:white;font-size: 25px;text-align: center;">
+							付某人
+						</p>
+						<p style="color:white;font-size: 15px;text-align: center;">
+							人生是如此的慵懒
+						</p>
+					</div>
+					<ul class="list">
+						<li style="border-bottom-color: #41464A;border-top-color: #41464A;">
+							<a href="#main_panel">推荐</a>
+						</li>
+						<li>
+							<a href="#user_panel">购物车</a>
+						</li>
+						<li>
+							<a href="#user_panel">收藏</a>
+						</li>
+						<li style="border-bottom-color: #41464A;">
+							<a href="#user_panel">用户中心</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</body>
 </html>
