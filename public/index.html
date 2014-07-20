@@ -74,19 +74,15 @@
 				initAdvertise();
 				/*-----------------初始化地理位置--------------------------*/
 				//geolocation.getCurrentPosition();
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-				} else {
-					alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
-				}
-			});
-			function successFunction(position) {
-				latitude = position.coords.latitude;
-				longitude = position.coords.longitude;
+				//	if (navigator.geolocation) {
+				//		navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+				//	} else {
+				//		alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+				//	}
 				/*-----------------初始化商品--------------------------*/
 				AV.Cloud.run('getItem', {
-					"latitude" : latitude,
-					"longitude" : longitude
+					"latitude" : 31.717531,
+					"longitude" : 118.787853
 				}, {
 					success : function(result) {
 						loadItem(result);
@@ -95,30 +91,33 @@
 						alert(error.message);
 					}
 				});
+			});
+			/*			function successFunction(position) {
+			latitude = position.coords.latitude;
+			longitude = position.coords.longitude;
+			-----------------初始化商品--------------------------
+			AV.Cloud.run('getItem', {
+			"latitude" : latitude,
+			"longitude" : longitude
+			}, {
+			success : function(result) {
+			loadItem(result);
+			},
+			error : function(error) {
+			alert(error.message);
+			}
+			});
 			}
 
 			function errorFunction() {
-				latitude = 31.717531;
-				longitude = 118.787853;
-				/*-----------------初始化商品--------------------------*/
-				AV.Cloud.run('getItem', {
-					"latitude" : latitude,
-					"longitude" : longitude
-				}, {
-					success : function(result) {
-						loadItem(result);
-					},
-					error : function(error) {
-						alert(error.message);
-					}
-				});
+			alert("定位失败，请打开gps，并给予懒了足够的权限");
 			}
-
+			*/
 			//加载商品
 			function loadItem(Items) {
 				var geo = new AV.GeoPoint({
-					latitude : latitude,
-					longitude : longitude
+					latitude : 31.717531,
+					longitude : 118.787853
 				});
 				for ( i = 0; i < Items.length; i++) {
 					var $span = ("<span>" + "距您" + geo.kilometersTo(Items[i].location).toFixed(2) + "km" + "</span>");
@@ -135,7 +134,9 @@
 					var $li = $("<li></li>");
 					var $a = $("<a></a>");
 					$a.append($img, $div);
-					$a.attr("href", "#buy_panel");
+					var setItem = "setItem('itemId', " + Items[i].objectId + ")";
+					$a.attr("href", "itemContent.html");
+					$a.attr('onclick', setItem);
 					$li.append($a);
 					$("#main_panel ul").append($li);
 				}
