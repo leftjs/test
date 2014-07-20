@@ -131,7 +131,9 @@
 #article_content_panel{
 	color:#999;
 }
-
+#afui #p_content img{
+	width:90%;
+}
 
 
 /*用户帖子*/

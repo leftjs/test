@@ -1,0 +1,134 @@
+<div id="contentDIV" style="padding-bottom:100px;">
+	<div id="replay_first">
+    	
+        
+    </div>    
+    
+    <div class="reply_content" id="reply_content">
+     
+         
+         
+    </div>
+    <p class="center"><a class="button" href="javascript:replayListMore();" id="loadmore">加载更多</a></p>
+    
+    
+</div>
+
+<script type="text/javascript">
+ 	$.ui.setBackButtonText('返回');	
+	$.ui.setTitle('帖子详细页');
+	$.ui.toggleNavMenu();
+	
+	var tid=getItem('thread_content_tid');
+	
+	//数据请求开始
+	$.jsonP({
+		//http://www.phonegap100.com/appapi.php?a=getThreadContent&tid=138	
+						
+		url:serverURL+'/appapi.php?a=getThreadContent&tid='+tid+'&callback=?',	
+		success:function(data){
+			var replayList='';	
+			var jsondata=data['result'];	
+			//alert(jsondata);				
+			//panel				
+			for(var i=0;i<jsondata.length;i++){	
+				if(i==0){  //表示的是帖子列表
+					var replay_first='<h2 style="padding-top:10px; height:auto;">'+jsondata[i]['subject']+'</h2>';
+					
+					 replay_first+='<div class="clearfix forum_content_user">';
+					 replay_first+='<img src="images/user.gif"  class="user_left"/>';
+					 replay_first+='<div class="user_left">';
+					 replay_first+=	' <span>'+jsondata[i]['author']+'</span><br />';
+					 replay_first+=	' <span>发表于：'+getDate(jsondata[i]['dateline'])+'</span>';
+					 replay_first+='</div>';
+					 replay_first+='<div class="user_right">';      
+					 replay_first+='  <a href="javascript:showPopupPost();" class="button">回帖</a>';
+					 replay_first+='</div> ';
+					 replay_first+='</div>';
+					 replay_first+='<p id="p_content">'+jsondata[i]['message']+'</p>';
+					 $('#replay_first').append(replay_first);
+					 
+				}else{
+					replayList+='<div class="reply_list">';
+					replayList+='<div class="clearfix forum_content_user">';
+					replayList+='<img src="images/user.gif"  class="user_left"/> ';						 
+					replayList+='<div class="user_left">';
+					replayList+='<span>'+jsondata[i]['author']+'</span><br />';		
+					replayList+='<span>发表于'+getDate(jsondata[i]['dateline'])+'</span>';			 
+					replayList+='</div>';		 
+					replayList+='</div>';	   
+					replayList+='<p>'+jsondata[i]['message']+'</p>';	
+					replayList+='</div>';			
+									
+				
+					
+				}					
+				
+			}
+			//append到回复的内容中
+			$('#reply_content').append(replayList);
+		}
+	});	
+	 //数据请求结束
+	
+	
+
+		
+		
+ $("#contentDIV").scroller({useJsScroll:true});
+ 
+ 
+ // 加载更多的回复帖子
+ 
+var replyPage=2;
+function replayListMore(){
+	$.jsonP({
+		//http://www.phonegap100.com/appapi.php?a=getThreadContent&tid=138	
+						
+		url:serverURL+'/appapi.php?a=getThreadContent&tid='+tid+'&page='+replyPage+'&callback=?',	
+		success:function(data){
+			var replayList='';	
+			var jsondata=data['result'];	
+			//alert(jsondata);				
+			//panel				
+			for(var i=0;i<jsondata.length;i++){	
+				
+					replayList+='<div class="reply_list">';
+					replayList+='<div class="clearfix forum_content_user">';
+					replayList+='<img src="images/user.gif"  class="user_left"/> ';						 
+					replayList+='<div class="user_left">';
+					replayList+='<span>'+jsondata[i]['author']+'</span><br />';		
+					replayList+='<span>发表于'+getDate(jsondata[i]['dateline'])+'</span>';			 
+					replayList+='</div>';		 
+					replayList+='</div>';	   
+					replayList+='<p>'+jsondata[i]['message']+'</p>';	
+					replayList+='</div>';			
+							
+				
+			}
+			//append到回复的内容中
+			$('#reply_content').append(replayList);
+			replyPage++;			
+		}
+	});	
+	
+}
+ 
+ 
+  //回帖
+ function showPopupPost() {
+	$("#afui").popup({
+		title: "回复帖子",
+		message: "<textarea id='post_content' rows='6' placeholder='请填写您要回复的内容'></textarea>",
+		cancelText: "取消",
+		cancelCallback: function () {},
+		doneText: "确定",
+		doneCallback: function () {
+			//处理登录的一些操作
+			alert("回复帖子操作");
+		},
+		cancelOnly: false
+	});
+}
+
+</script>
