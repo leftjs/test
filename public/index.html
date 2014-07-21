@@ -2,21 +2,11 @@
 <!--HTML5 doctype-->
 <html>
 	<head>
-		<script>
-			(function() {
-				if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
-					var msViewportStyle = document.createElement("style");
-					msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
-					document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-				}
-			})();
-		</script>
 		<title>懒了</title>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<!-- 百度地图外链-->
 		<!--	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nrwxIqtCaowxScVj6K6Yk6mQ"></script>-->
 		<!-- 高德地图外链-->
@@ -30,14 +20,10 @@
 		<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />
-		<script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>
-		<script>
-			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-				var script = document.createElement("script");
-				script.src = "plugins/af.desktopBrowsers.js";
-				var tag = $("head").append(script);
-			}
-		</script>
+		<script type="text/javascript" src="./scripts/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./jq.appframework.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
+		<script type="text/javascript" src="logic.js"></script>
 		<!--项目中常用的一些插件-->
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
@@ -47,7 +33,6 @@
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
-		<script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
@@ -55,7 +40,6 @@
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
-		<script type="text/javascript" src="scripts/jquery-1.9.0.min.js"></script>
 		<script type="text/javascript" src="jquery.nivo.slider.js"></script>
 		<!--	<script text="text/javascript" src="cordova.js"></script>-->
 		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
@@ -93,54 +77,27 @@
 				});
 			});
 			/*			function successFunction(position) {
-			latitude = position.coords.latitude;
-			longitude = position.coords.longitude;
-			-----------------初始化商品--------------------------
-			AV.Cloud.run('getItem', {
-			"latitude" : latitude,
-			"longitude" : longitude
-			}, {
-			success : function(result) {
-			loadItem(result);
-			},
-			error : function(error) {
-			alert(error.message);
-			}
-			});
-			}
+			 latitude = position.coords.latitude;
+			 longitude = position.coords.longitude;
+			 -----------------初始化商品--------------------------
+			 AV.Cloud.run('getItem', {
+			 "latitude" : latitude,
+			 "longitude" : longitude
+			 }, {
+			 success : function(result) {
+			 loadItem(result);
+			 },
+			 error : function(error) {
+			 alert(error.message);
+			 }
+			 });
+			 }
 
-			function errorFunction() {
-			alert("定位失败，请打开gps，并给予懒了足够的权限");
-			}
-			*/
-			//加载商品
-			function loadItem(Items) {
-				var geo = new AV.GeoPoint({
-					latitude : 31.717531,
-					longitude : 118.787853
-				});
-				for ( i = 0; i < Items.length; i++) {
-					var $span = ("<span>" + "距您" + geo.kilometersTo(Items[i].location).toFixed(2) + "km" + "</span>");
-					var $p2 = $("<p></p>");
-					$p2.attr("class", "item_description")
-					$p2.append(Items[i].shopName, $span);
-					var $p1 = $("<p></p>");
-					$p1.css("font-size", "25px");
-					$p1.append(Items[i].name);
-					var $div = $("<div></div>");
-					$div.append($p1, $p2);
-					var $img = $("<img></img>");
-					$img.attr("src", Items[i].smallImage._url);
-					var $li = $("<li></li>");
-					var $a = $("<a></a>");
-					$a.append($img, $div);
-					var setItem = "setItem('itemId', " + Items[i].objectId + ")";
-					$a.attr("href", "itemContent.html");
-					$a.attr('onclick', setItem);
-					$li.append($a);
-					$("#main_panel ul").append($li);
-				}
-			}
+			 function errorFunction() {
+			 alert("定位失败，请打开gps，并给予懒了足够的权限");
+			 }
+			 */
+
 		</script>
 		<script>
 			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
@@ -149,27 +106,7 @@
 				var tag = $("head").append(script);
 			}
 		</script>
-		<script>
-			function initAdvertise() {
-				var ad = AV.Object.extend("Advertise");
-				var query = new AV.Query(ad);
-				query.descending("updatedAt");
-				query.limit(4);
-				query.find({
-					success : function(results) {
-						for (var i = 0; i < results.length; i++) {
-							var $img = $("<img></img>");
-							$img.attr("src", results[i].get("picture").url());
-							$("#slider").append($img);
-						}
-						$('#slider').nivoSlider();
-					},
-					error : function(error) {
-						alert("Error: " + error.code + " " + error.message);
-					}
-				});
-			}
-		</script>
+
 		<style type="text/css">
 			#afui #user_panel {
 				background: #EBEBEB;
@@ -200,10 +137,6 @@
 				margin: 0 auto;
 				opacity: 0.7;
 				filter: alpha(opacity=50)
-			}
-			#shopping_cart_panel img {
-				display: block;
-				width: 100%;
 			}
 			.float_left {
 				float: left;
@@ -238,7 +171,8 @@
 			}
 			#main_panel ul li img {
 				float: left;
-				height: 80px
+				height: 80px;
+				border-radius: 15px;
 			}
 			#main_panel ul li a {
 				display: block;
@@ -273,6 +207,46 @@
 				text-decoration: none;
 				color: #000000;
 			}
+			#afui.ios7 #buy_panel {
+				background: #5CC2D1;
+			}
+			#buy_panel {
+				text-align: center;
+			}
+			#buy_panel img {
+				width: 135px;
+				height: 135px;
+				margin: auto;
+				display: block;
+				border-radius: 15px;
+			}
+			#buy_panel a img {
+				margin: 30px 0px 30px 30px;
+				height: 35px;
+				width: 35px;
+			}
+			#buy_panel a {
+				display: block;
+			}
+			#buy_panel #price_detail {
+				font-size: 20px;
+				font-family: "黑体";
+				margin-top: 15px;
+			}
+			#buy_panel #description {
+				color: green;
+				margin: 13px;
+			}
+			#buy_panel div > div > img {
+				height: 70px;
+				width: 220px;
+				margin-top: 20px;
+			}
+			#buy_panel #item_name {
+				margin-top: 20px;
+				color: white;
+				font-size: 30px;
+			}
 		</style>
 	</head>
 	<body>
@@ -283,25 +257,21 @@
 					<div class="slider-wrapper theme-default">
 						<div id="slider" class="nivoSlider"></div>
 					</div>
-					<ul style="list-style-type:none">
-						<li>
-							<a href="itemContent.html" onclick="alert(2);"> <img src="images/pie.png" />
-							<div>
-								<p>
-									辣汤鸡
-								</p>
-								<p>
-									天盛<span>距您13km</span>
-								</p>
-							</div> </a>
-						</li>
-					</ul>
+					<ul style="list-style-type:none"></ul>
 				</div>
-
 				<!------------------------------------------------------购买------------------------------------------------------------>
-				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="topBar">
-					<a style="display: block;"><img src="images/back.png" /></a>
-					<img src="images/chiken.jpg" style="width: 200px;height: 200px;margin:auto;display: block;" />
+				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="none" data-load="buyPanelLoad">
+					<a href="#main_panel"><img src="images/back.png" /></a>
+					<img id="item_pic_big" src="images/loading.jpg" />
+					<p id="item_name"></p>
+					<p id="price_detail">
+						<span>20</span>元
+					</p>
+					<p id="description"></p>
+					<div>
+						<img onClick="loginPop()" src="images/addCart.png" />
+						<img onclick="collect()" src="images/collect.png"/>
+					</div>
 				</div>
 				<!------------------------------------------------------用户中心------------------------------------------------------------>
 				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
@@ -318,7 +288,7 @@
 							<a href="#home">账户余额</a>
 						</li>
 						<li>
-							<a href="#home">抵用券</a>
+							<a href="#home" onclick="loginPop();">抵用券</a>
 						</li>
 						<li>
 							<a href="#home">我的收藏</a>
