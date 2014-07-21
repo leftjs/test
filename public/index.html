@@ -108,35 +108,8 @@
 		</script>
 
 		<style type="text/css">
-			#afui #user_panel {
-				background: #EBEBEB;
-			}
 			#afui .list {
 				background-color: #F7F7F7;
-			}
-			#user_panel #loginRegion {
-				margin-top: 10px;
-				height: 200px;
-				padding-top: 50px;
-				background: url(images/panpanda.jpg);
-				background-size: 100% 100%;
-			}
-			#user_options {
-				margin-top: 10px !important;
-			}
-			#social_options {
-				margin-top: 20px !important;
-			}
-			#loginButton {
-				text-align: center;
-				padding-top: 20px;
-				width: 300px;
-				height: 100px;
-				background: #F3F5F4;
-				background-size: 100% 100%;
-				margin: 0 auto;
-				opacity: 0.7;
-				filter: alpha(opacity=50)
 			}
 			.float_left {
 				float: left;
@@ -247,6 +220,10 @@
 				color: white;
 				font-size: 30px;
 			}
+			#user_panel > div > div {
+				height: 300px;
+				background: #00ADEF;
+			}
 		</style>
 	</head>
 	<body>
@@ -274,34 +251,10 @@
 					</div>
 				</div>
 				<!------------------------------------------------------用户中心------------------------------------------------------------>
-				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="none">
-					<div id="loginRegion">
-						<div id="loginButton">
-							<a class="button">登录</a>
-						</div>
+				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="topBar">
+					<div>
+
 					</div>
-					<ul id="user_options" class="list inset" >
-						<li>
-							<a href="#home">我的订单</a>
-						</li>
-						<li>
-							<a href="#home">账户余额</a>
-						</li>
-						<li>
-							<a href="#home" onclick="loginPop();">抵用券</a>
-						</li>
-						<li>
-							<a href="#home">我的收藏</a>
-						</li>
-					</ul>
-					<ul id="social_options" class="list inset">
-						<li>
-							<a href="#home">用户反馈</a>
-						</li>
-						<li>
-							<a href="#home">分享好友</a>
-						</li>
-					</ul>
 				</div>
 				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
