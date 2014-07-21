@@ -94,6 +94,6 @@ function collect() {
 }
 
 function loginPop() {
-	$("#afui").popup("I'm replacing an alert box");
+	af("#afui").popup("I'm replacing an alert box");
 }
 
