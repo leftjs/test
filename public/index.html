@@ -215,14 +215,27 @@
 				width: 220px;
 				margin-top: 20px;
 			}
-			#buy_panel #item_name {
+			#buy_panel #buy_panel_item_name {
 				margin-top: 20px;
 				color: white;
 				font-size: 30px;
 			}
-			#user_panel > div > div {
+			#user_panel #user_panel_bg {
 				height: 300px;
+				width: 100%;
 				background: #00ADEF;
+				padding-top: 60px;
+			}
+			#user_panel #user_panel_bg > img {
+				display: block;
+				margin: 0px auto 30px;
+				height: 120px;
+				width: 120px;
+				border-radius: 15px;
+			}
+			#user_panel #user_panel_function_region  img {
+				float: left;
+				width: 33.33333%;
 			}
 		</style>
 	</head>
@@ -238,9 +251,9 @@
 				</div>
 				<!------------------------------------------------------购买------------------------------------------------------------>
 				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="none" data-load="buyPanelLoad">
-					<a href="#main_panel"><img src="images/back.png" /></a>
+					<a onclick="af.ui.goBack()"><img src="images/back.png" /></a>
 					<img id="item_pic_big" src="images/loading.jpg" />
-					<p id="item_name"></p>
+					<p id="buy_panel_item_name"></p>
 					<p id="price_detail">
 						<span>20</span>元
 					</p>
@@ -252,9 +265,31 @@
 				</div>
 				<!------------------------------------------------------用户中心------------------------------------------------------------>
 				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="topBar">
-					<div>
-
+					<div id="user_panel_bg">
+						<img src="images/logo.png" />
 					</div>
+					<div id="user_panel_function_region" style="margin: 0px 10px;">
+						<a><img src="images/share_normal.png"/></a>
+						<a><img src="images/fade_back_nomal.png" style="margin-top: -5px;" /></a>
+						<a><img src="images/collect_nomal.png" /></a>
+					</div>
+				</div>
+				<!------------------------------------------------------购物车------------------------------------------------------------>
+				<div title="购物车" id="shopping_cart" class="panel" data-footer="none" data-header="topBar">
+					<ul style="list-style-type:none">
+						<li>
+							<a onclick="localStorage.setItem('itemId', '53c63cbbe4b0850e96eb41dc')" href="#buy_panel" data-transition="pop"> <img src="http://ac-hhdpk5vy.qiniudn.com/ko6KmVhnJVMB6evga8VYfNNpOwuYX0k143mbrXIH.jpg"></img>
+							<div>
+								<p style="font-size: 25px;">
+									辣汤鸡
+								</p>
+								<p class="item_description">
+									天盛国际大酒店
+									<span> 距您0.00km </span>
+								</p>
+							</div> </a>
+						</li>
+					</ul>
 				</div>
 				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
@@ -264,21 +299,17 @@
 				<!------------------------------------------------------导航------------------------------------------------------------>
 				<nav>
 					<div style="height: 200px;width:200px;background: #272C30;">
-						<img src="images/userhead.png" style="height: 100px;width: 100px;
-						margin:20px 50px 0px;"/>
-						<p style="color:white;font-size: 25px;text-align: center;">
-							付某人
-						</p>
-						<p style="color:white;font-size: 15px;text-align: center;">
-							人生是如此的慵懒
-						</p>
+						<img src="images/logo.png" style="height: 100px;width: 100px;
+						margin:20px 50px 0px;border-radius: 15px;"/>
+						<p id="nav_phonenumber" style="color:white;font-size: 25px;text-align: center;"></p>
+						<p id="nav_adress" style="color:white;font-size: 15px;text-align: center;"></p>
 					</div>
 					<ul class="list">
 						<li style="border-bottom-color: #41464A;border-top-color: #41464A;">
 							<a href="#main_panel">推荐</a>
 						</li>
 						<li>
-							<a href="#user_panel">购物车</a>
+							<a href="#shopping_cart">购物车</a>
 						</li>
 						<li>
 							<a href="#user_panel">收藏</a>

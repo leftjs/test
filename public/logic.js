@@ -21,8 +21,9 @@ function loadItem(Items) {
 		$a.append($img, $div);
 		//var test =
 		var setItem = "localStorage.setItem('itemId', " + "'" + Items[i].objectId + "'" + ")";
-		$a.attr("href", "#buy_panel");
 		$a.attr('onclick', setItem);
+		$a.attr("href", "#buy_panel");
+		$a.attr("data-transition", "pop");
 		$li.append($a);
 		$("#main_panel ul").append($li);
 	}
