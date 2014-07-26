@@ -189,7 +189,7 @@ function CollectPanelLoad() {
 			"userId" : currentUser.id
 		}, {
 			success : function(result) {
-				alert(1);
+				alert(result);
 			},
 			error : function(error) {
 				alert(error.message);
