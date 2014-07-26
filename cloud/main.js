@@ -32,7 +32,7 @@ AV.Cloud.define("getFavorite", function(request, response) {
 				var favoriates = new Array();
 				var i;
 				for ( i = 0; i < results.length; i++) {
-					favoriates.push(results.get("itemId"));
+					favoriates.push(results[i].get("itemId"));
 				}
 				response.success(favoriates.length);
 				var Item = AV.Object.extend("Item");
