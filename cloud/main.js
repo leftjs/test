@@ -34,7 +34,6 @@ AV.Cloud.define("getFavorite", function(request, response) {
 				for ( i = 0; i < results.length; i++) {
 					favoriates.push(results[i].get("itemId"));
 				}
-				response.success(favoriates.length);
 				var Item = AV.Object.extend("Item");
 				var query = new AV.Query(Item);
 				query.containedIn("objectId", favoriates);
