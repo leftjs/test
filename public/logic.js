@@ -98,7 +98,6 @@ function collect() {
 	} else {
 		// show the signup or login page
 		popup = loginPop();
-
 	}
 }
 
@@ -189,7 +188,11 @@ function CollectPanelLoad() {
 			"userId" : currentUser.id
 		}, {
 			success : function(result) {
-				alert(result);
+				$("#collect_panel ul").empty();
+				for ( i = 0; i < result.length; i++) {
+					var li = "<li><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' /></div></li>";
+					$("#collect_panel ul").append(li);
+				}
 			},
 			error : function(error) {
 				alert(error.message);
@@ -204,6 +207,7 @@ function CollectPanelLoad() {
 	}
 }
 
+//下单函数
 function placeOrder() {
 	if (shoppoingCart.length == 0) {
 		af("#afui").popup("您的购物车内没有任何物品");
@@ -216,9 +220,10 @@ function placeOrder() {
 		}, {
 			success : function(result) {
 				af("#afui").popup("下单成功，请等待送货");
+				shoppoingCart.length = 0;
 			},
 			error : function(error) {
-				alert(error.message);
+				af("#afui").popup(error.message);
 			}
 		});
 	}

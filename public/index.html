@@ -274,6 +274,9 @@
 				float: left;
 				height: 80px;
 			}
+			#collect_panel > div > ul > li {
+				height: 80px;
+			}
 			#collect_panel > div > ul > li > div > div > p {
 				float: left;
 				height: 80px;
@@ -291,7 +294,7 @@
 				margin-bottom: 10px;
 				padding: 10px 20px;
 			}
-			#collect_panel #delete_collect_panel {
+			#collect_panel .delete_collect_panel {
 				float: right;
 				width: 45px;
 				height: 45px;
@@ -303,13 +306,30 @@
 				margin: 20px auto;
 				display: block;
 			}
+			#navbar  footer a {
+				float: right;
+				height: 50px;
+				width: 25px;
+			}
+			#navbar  footer img {
+				float: right;
+				height: 50px;
+				width: 100px;
+				margin-top: 3px;
+			}
+
+			#navbar  footer p {
+				height: 50px;
+				float: left;
+				line-height: 50px;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="afui" class="bb">
 			<div id="content">
 				<!------------------------------------------------------购物车------------------------------------------------------------>
-				<div title="购物车" id="shopping_cart_panel" class="panel" data-footer="none" data-header="topBar">
+				<div title="购物车" id="shopping_cart_panel" class="panel" data-header="topBar">
 					<div>
 						<img src="images/shopping_cart.png" />
 						<p>
@@ -327,13 +347,19 @@
 									<p>
 										天盛国际大酒店<span> 距您0.00km </span>
 									</p>
-									<div>
-										<span>20</span>件
-									</div>
 								</div>
+							</div>
+							<div style="clear: both;float:right;font-size: 25px;margin-right: 25px;">
+								<img src="images/minus.png" style="width: 25px;height: 25px;" /><span>20</span><img src="images/plus.png" style="width: 25px;height: 25px;" />件
 							</div>
 						</li>
 					</ul>
+					<footer>
+						<p>
+							当前购物车总价：￥<span>dfgsdfg</span>
+						</p>
+						<img onclick="placeOrder()" src="images/placeOrderBtn.png" />
+					</footer>
 				</div>
 				<!------------------------------------------------------收藏------------------------------------------------------------>
 				<div title="收藏" id="collect_panel" class="panel" data-footer="none" data-header="topBar" data-load="CollectPanelLoad">
@@ -343,19 +369,7 @@
 							收藏
 						</p>
 					</div>
-					<ul style="list-style-type:none">
-						<li>
-							<div>
-								<img src="http://ac-hhdpk5vy.qiniudn.com/ko6KmVhnJVMB6evga8VYfNNpOwuYX0k143mbrXIH.jpg"></img>
-								<div>
-									<p>
-										辣汤鸡
-									</p>
-								</div>
-								<img id="delete_collect_panel" src="images/delete.png" />
-							</div>
-						</li>
-					</ul>
+					<ul style="list-style-type:none"></ul>
 				</div>
 				<!------------------------------------------------------主页------------------------------------------------------------>
 				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
@@ -414,7 +428,7 @@
 							<a href="#collect_panel">收藏</a>
 						</li>
 						<li style="border-bottom-color: #41464A;">
-							<a href="#user_panel">用户心</a>
+							<a href="#user_panel">用户中心</a>
 						</li>
 					</ul>
 				</nav>
