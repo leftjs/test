@@ -30,9 +30,11 @@ AV.Cloud.define("getFavorite", function(request, response) {
 				response.error("没有收藏");
 			} else {
 				var favoriates = new Array();
-				for (var i = 0; i < results.length; i++) {
+				var i;
+				for ( i = 0; i < results.length; i++) {
 					favoriates.push(results.get("itemId"));
 				}
+				response.success(favoriates.length);
 				var Item = AV.Object.extend("Item");
 				var query = new AV.Query(Item);
 				query.containedIn("objectId", favoriates);
