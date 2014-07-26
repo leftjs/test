@@ -56,11 +56,10 @@ AV.Cloud.define("getFavorite", function(request, response) {
 AV.Cloud.define("getShoppingCart", function(request, response) {
 	var Item = AV.Object.extend("Item");
 	var query = new AV.Query(Item);
-	response.success(request.params.itemIds.length);
 	query.containedIn("objectId", request.params.itemIds);
 	query.find({
 		success : function(results) {
-			response.success(results);
+			response.success(results.length);
 		},
 		error : function(error) {
 			response.error(error.message);
