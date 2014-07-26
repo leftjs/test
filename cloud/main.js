@@ -59,7 +59,7 @@ AV.Cloud.define("getShoppingCart", function(request, response) {
 	query.containedIn("objectId", request.params.itemIds);
 	query.find({
 		success : function(results) {
-			response.success(results.length);
+			response.success(results);
 		},
 		error : function(error) {
 			response.error(error.message);
