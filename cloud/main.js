@@ -29,8 +29,8 @@ AV.Cloud.define("getFavorite", function(request, response) {
 			if (results.length == 0) {
 				response.error("没有收藏");
 			} else {
+				response.success("执行到else");
 				var favoriates = new Array();
-				response.success(results.get("itemId"));
 				for ( i = 0; i < results.length; i++) {
 					favoriates.push(results.get("itemId"));
 				}
