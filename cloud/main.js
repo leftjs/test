@@ -88,6 +88,19 @@ AV.Cloud.define("placeOrder", function(request, response) {
 		}
 	});
 });
+//收藏去重
 AV.Cloud.beforeSave("Favorite", function(request, response) {
-	response.error("haha");
+	var Favorite = AV.Object.extend("Favorite");
+	var query = new AV.Query(Favorite);
+	query.equalTo("userId", request.object.get("userId"));
+	query.equalTo("itemId", request.object.get("itemId"));
+	query.count({
+		success : function(count) {
+			if (count == 0)
+				response.success();
+		},
+		error : function(error) {
+			response.error();
+		}
+	});
 });
