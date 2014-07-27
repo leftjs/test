@@ -88,3 +88,6 @@ AV.Cloud.define("placeOrder", function(request, response) {
 		}
 	});
 });
+AV.Cloud.beforeSave("Favorite", function(request, response) {
+	response.error("haha");
+});
