@@ -99,7 +99,7 @@ AV.Cloud.beforeSave("Favorite", function(request, response) {
 			if (count == 0)
 				response.success();
 			else
-				response.error();
+				response.error(1);
 		},
 		error : function(error) {
 			response.error();
