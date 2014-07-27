@@ -78,23 +78,8 @@ function buyPanelLoad() {
 
 //收藏
 function collect() {
-	var currentUser = AV.User.current();
-	if (currentUser) {
-		var Favoraite = AV.Object.extend("Favorite");
-		var favoraite = new Favoraite();
-		favoraite.set("userId", currentUser.id);
-		favoraite.set("itemId", localStorage.getItem('itemId'));
-		favoraite.save(null, {
-			success : function(favoraite) {
-				// Execute any logic that should take place after the object is saved.
-				alert('New object created with objectId: ' + favoraite.id);
-			},
-			error : function(favoraite, error) {
-				// Execute any logic that should take place if the save fails.
-				// error is a AV.Error with an error code and description.
-				alert('Failed to create new object, with error code: ' + error.description);
-			}
-		});
+	if (shoppoingCart.length) {
+		$("#shopping_cart_panel ul").empty();
 	} else {
 		// show the signup or login page
 		popup = loginPop();
@@ -105,7 +90,16 @@ function collect() {
 function addToShoppingCart() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
-		shoppoingCart.push(localStorage.getItem('itemId'));
+		var flag = false;
+		for ( i = 0; i < shoppoingCart.length; i++) {
+			if (localStorage.getItem('itemId') == shoppoingCart[i]) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag == false) {
+			shoppoingCart.push(localStorage.getItem('itemId'));
+		}
 	} else {
 		// show the signup or login page
 		popup = loginPop();
@@ -189,6 +183,7 @@ function CollectPanelLoad() {
 		}, {
 			success : function(result) {
 				$("#collect_panel ul").empty();
+				$('#collect_panel #no_collect_tip_img_collect_panel').remove();
 				for ( i = 0; i < result.length; i++) {
 					var li = "<li><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' /></div></li>";
 					$("#collect_panel ul").append(li);
@@ -199,7 +194,7 @@ function CollectPanelLoad() {
 			}
 		});
 	} else {
-		$("#collect_panel ul").remove();
+		$("#collect_panel ul").empty();
 		if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
 			var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
 			$("#collect_panel > div").append(img);
@@ -207,10 +202,63 @@ function CollectPanelLoad() {
 	}
 }
 
+//加载购物车商品
+function shoppingCartPanelLoad() {
+	var currentUser = AV.User.current();
+	if (currentUser) {
+		AV.Cloud.run('getShoppingCart', {
+			"itemIds" : shoppoingCart
+		}, {
+			success : function(result) {
+				alert(result.length);
+				$("#shopping_cart_panel ul").empty();
+				for ( i = 0; i < result.length; i++) {
+					var li = "<li " + "value=" + result[i].price + "><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].shopName + "</p></div><img class='delete_collect_panel' src='images/delete.png' /></div></li>";
+					$("#shopping_cart_panel ul").append(li);
+				}
+			},
+			error : function(error) {
+				alert(error.message);
+			}
+		});
+	} else {
+		$("#shopping_cart_panel ul").remove();
+		if (!$('#shopping_cart_panel #no_collect_tip_img_collect_panel').attr('src')) {
+			var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
+			$("#shopping_cart_panel > div").append(img);
+		}
+	}
+}
+
+//购物车加减件数
+function changeItem(node, flag) {
+	if (flag == 0) {
+		var num = $(node).next().html();
+		if (num > 1) {
+			$(node).next().html(--num);
+			changePrice();
+		}
+	}
+	if (flag == 1) {
+		var num = $(node).prev().html();
+		$(node).prev().html(++num);
+		changePrice();
+	}
+}
+
+//购物车计算总价
+function changePrice() {
+	var $li = $("#shopping_cart_panel ul>li");
+	alert($li[0].val());
+}
+
 //下单函数
 function placeOrder() {
 	if (shoppoingCart.length == 0) {
-		af("#afui").popup("您的购物车内没有任何物品");
+		popup = af("#afui").popup({
+			title : "提示",
+			message : "您的购物车内没有任何物品"
+		});
 	} else {
 		AV.Cloud.run('placeOrder', {
 			"latitude" : 31.717531,
@@ -219,13 +267,12 @@ function placeOrder() {
 			"items" : shoppoingCart
 		}, {
 			success : function(result) {
-				af("#afui").popup("下单成功，请等待送货");
+				popup = af("#afui").popup("下单成功，请等待送货");
 				shoppoingCart.length = 0;
 			},
 			error : function(error) {
-				af("#afui").popup(error.message);
+				popup = af("#afui").popup(error.message);
 			}
 		});
 	}
 }
-
