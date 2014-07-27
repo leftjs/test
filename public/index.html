@@ -231,7 +231,7 @@
 				width:33.33333%;
 			}
 			#shopping_cart_panel ul li {
-				height:115px;
+				height:132px;
 			}
 			#shopping_cart_panel ul li> div:first-child> div {
 				height:80px;
@@ -248,20 +248,23 @@
 				border-bottom:2px solid #41464A;
 			}
 			#shopping_cart_panel ul li> div:nth-child(2) {
-				height:33px;
-				line-height:28px;
+				height:50px;
+				line-height:50px;
 				float:right;
 				font-size:25px;
 			}
 			#shopping_cart_panel ul li> div:nth-child(2)> img {
 				float:none;
-				width:30px;
-				height:30px;
+				width:50px;
+				height:50px;
 			}
-			#shopping_cart_panel ul img {
+			#shopping_cart_panel ul li img {
 				height:80px;
 				float:left;
 				border-radius:15px;
+			}
+			#shopping_cart_panel ul li img.delete_shopping_cart_panel {
+				float:right;
 			}
 			#shopping_cart_panel> div> ul> li> div> div {
 				float:left;
@@ -352,6 +355,7 @@
 				height:50px;
 				float:left;
 				line-height:50px;
+				font-size:20px;
 			}
 		</style>
 	</head>
@@ -359,7 +363,7 @@
 		<div id="afui" class="bb">
 			<div id="content">
 				<!------------------------------------------------------购物车------------------------------------------------------------>
-				<div title="购物车" id="shopping_cart_panel" class="panel" data-header="topBar">
+				<div title="购物车" id="shopping_cart_panel" class="panel" data-header="topBar" data-load="shoppingCartPanelLoad">
 					<div>
 						<img src="images/shopping_cart.png" />
 						<p>
@@ -367,42 +371,27 @@
 						</p>
 					</div>
 					<ul style="list-style-type:none">
-						<li value="20">
-							<div>
+						<li value="100">
+							<div value="53c63cbbe4b0850e96eb41dc">
 								<img src="http://ac-hhdpk5vy.qiniudn.com/ko6KmVhnJVMB6evga8VYfNNpOwuYX0k143mbrXIH.jpg"></img>
 								<div>
 									<p>
 										辣汤鸡
 									</p>
 									<p>
-										天盛国际大酒店
+										20元
 									</p>
 								</div>
+								<img class="delete_shopping_cart_panel" src="images/delete.png" onclick='deleteShoppingCart(this)' />
 							</div>
 							<div>
-								我要买<img src="images/minus.png" onclick="changeItem(this,0)"/><span>1</span><img src="images/plus.png" onclick="changeItem(this,1)" />件
-							</div>
-						</li>
-						<li>
-							<div>
-								<img src="http://ac-hhdpk5vy.qiniudn.com/ko6KmVhnJVMB6evga8VYfNNpOwuYX0k143mbrXIH.jpg"></img>
-								<div>
-									<p>
-										辣汤鸡
-									</p>
-									<p>
-										天盛国际大酒店
-									</p>
-								</div>
-							</div>
-							<div>
-								我要买<img src="images/minus.png" onclick="changeItem(this,0)"/><span>1</span><img src="images/plus.png" onclick="changeItem(this,1)" />件
+								我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件
 							</div>
 						</li>
 					</ul>
 					<footer>
 						<p>
-							当前购物车总价：￥<span>dfgsdfg</span>
+							当前购物车总价：￥<span>0</span>
 						</p>
 						<img onclick="placeOrder()" src="images/placeOrderBtn.png" />
 					</footer>
@@ -449,7 +438,6 @@
 						<a><img src="images/collect_nomal.png" /></a>
 					</div>
 				</div>
-
 				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
 					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png"style="width: 45px;height: 45px;float: left;" /></a>

@@ -213,9 +213,10 @@ function shoppingCartPanelLoad() {
 				alert(result.length);
 				$("#shopping_cart_panel ul").empty();
 				for ( i = 0; i < result.length; i++) {
-					var li = "<li " + "value=" + result[i].price + "><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].shopName + "</p></div><img class='delete_collect_panel' src='images/delete.png' /></div></li>";
+					var li = "<li " + "value='" + result[i].price + "'><div value='" + result[i].objectId + "'><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].shopName + "</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
 					$("#shopping_cart_panel ul").append(li);
 				}
+				changePrice();
 			},
 			error : function(error) {
 				alert(error.message);
@@ -248,8 +249,14 @@ function changeItem(node, flag) {
 
 //购物车计算总价
 function changePrice() {
-	var $li = $("#shopping_cart_panel ul>li");
-	alert($li[0].val());
+	var count = 0;
+	for ( i = 0; i < $("#shopping_cart_panel ul li").length; i++) {
+		var $li = $("#shopping_cart_panel ul li").eq(i);
+		var value = $li.val();
+		var piece = parseInt($li.find("span").html());
+		count += $li.val() * $li.find("span").html();
+	}
+	$("#navbar  footer p span").html(count);
 }
 
 //下单函数
@@ -275,4 +282,14 @@ function placeOrder() {
 			}
 		});
 	}
+}
+
+//删除购物车函数
+function deleteShoppingCart(node) {
+	for ( i = 0; i < shoppoingCart.length; i++) {
+		if ($(node).parent().val() == shoppoingCart[i]) {
+			shoppoingCart.splice(i, 1);
+		}
+	}
+	$(node).parent().parent().remove();
 }
