@@ -27,7 +27,7 @@ AV.Cloud.define("getFavorite", function(request, response) {
 	query.find({
 		success : function(results) {
 			if (results.length == 0) {
-				response.error("没有收藏");
+				response.error(1);
 			} else {
 				var favoriates = new Array();
 				var i;
