@@ -14,7 +14,7 @@ AV.Cloud.define("getItem", function(request, response) {
 		if (shops.length == 0) {
 			response.error(1);
 		} else {
-			var shops = new Array();
+			var shopIds = new Array();
 			for (var i = 0; i < shops.length; i++) {
 				shopIds.push(shops[i].get("objectId"));
 			}
@@ -22,17 +22,17 @@ AV.Cloud.define("getItem", function(request, response) {
 			var query = new AV.Query(Item);
 			query.containedIn("shopId", shopIds);
 			query.find({
-				success : function(results) {
-					for (var i = 0; i < results.length; i++) {
+				success : function(items) {
+					for (var i = 0; i < items.length; i++) {
 						for (var j = 0; j < shops.length; j++) {
-							if (results[i].get("shopId") == shops[j].get("objectId")) {
-								results[i].set("shopName", shops[j].get("name"));
-								results[i].set("location", shops[j].get("location"));
+							if (items[i].get("shopId") == shops[j].get("objectId")) {
+								items[i].set("shopName", shops[j].get("name"));
+								items[i].set("location", shops[j].get("location"));
 								break;
 							}
 						}
 					}
-					response.success(results);
+					response.success(items);
 				},
 				error : function(error) {
 					response.error(error.message);
