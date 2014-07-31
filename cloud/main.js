@@ -5,13 +5,14 @@ AV.Cloud.define("getItem", function(request, response) {
 	// User's location
 	var userGeoPoint = new AV.GeoPoint({
 		latitude : request.params.latitude,
-		longitude : 119.787853
+		longitude : 118.807853
 	});
 	var Shops = AV.Object.extend("Shop");
 	var query = new AV.Query(Shops);
 	query.withinKilometers("location", userGeoPoint, 6);
 	query.find().then(function(shops) {
 		if (shops.length == 0) {
+			//返回特殊值 显示无服务
 			response.error("失败");
 		} else {
 			var shopIds = new Array();
