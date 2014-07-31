@@ -12,7 +12,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	query.withinKilometers("location", userGeoPoint, 6);
 	query.find().then(function(shops) {
 		if (shops.length == 0) {
-			response.error(1);
+			response.error("失败");
 		} else {
 			var shopIds = new Array();
 			for (var i = 0; i < shops.length; i++) {
