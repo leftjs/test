@@ -23,7 +23,7 @@ AV.Cloud.define("getItem", function(request, response) {
 			query.containedIn("shopId", shopIds);
 			query.find({
 				success : function(items) {
-					response.success("成功");
+					response.success(items.length);
 					for (var i = 0; i < items.length; i++) {
 						for (var j = 0; j < shops.length; j++) {
 							if (items[i].get("shopId") == shops[j].get("objectId")) {
