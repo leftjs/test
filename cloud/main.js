@@ -16,7 +16,7 @@ AV.Cloud.define("getItem", function(request, response) {
 		} else {
 			var shops = new Array();
 			for (var i = 0; i < shops.length; i++) {
-				shopIds.push(results[i].get("objectId"));
+				shopIds.push(shops[i].get("objectId"));
 			}
 			var Item = AV.Object.extend("Item");
 			var query = new AV.Query(Item);
