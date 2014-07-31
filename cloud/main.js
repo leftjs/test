@@ -7,17 +7,46 @@ AV.Cloud.define("getItem", function(request, response) {
 		latitude : request.params.latitude,
 		longitude : request.params.longitude
 	});
-	var Items = AV.Object.extend("Item");
-	// Create a query for places
-	var query = new AV.Query(Items);
+	var Shops = AV.Object.extend("Shop");
+	var query = new AV.Query(Shops);
 	query.withinKilometers("location", userGeoPoint, 6);
-	// Limit what could be a lot of points.
-	query.limit(10);
-	query.find({
-		success : function(Items) {
-			response.success(Items);
+	query.find().then(function(shops) {
+		if (shops.length == 0) {
+			response.error(1);
+		} else {
+			var shops = new Array();
+			for (var i = 0; i < results.length; i++) {
+				shopIds.push(results[i].get("objectId"));
+			}
+			var Item = AV.Object.extend("Item");
+			var query = new AV.Query(Item);
+			query.containedIn("shopId", shopIds);
+			query.find({
+				success : function(results) {
+					for (var i = 0; i < results.length; i++) {
+						for (var j = 0; j < shops.length; j++) {
+							if (results[i].get("shopId") == shops[j].get("objectId")) {
+								results[i].set("shopName", shops[j].get("name"));
+								results[i].set("location", shops[j].get("location"));
+								break;
+							}
+						}
+					}
+					response.success(results);
+				},
+				error : function(error) {
+					response.error(error.message);
+				}
+			});
 		}
+	}, function(error) {
+
 	});
+	// ({
+	// success : function(Items) {
+	// response.success(Items);
+	// }
+	// });
 });
 //获取收藏
 AV.Cloud.define("getFavorite", function(request, response) {
@@ -30,8 +59,7 @@ AV.Cloud.define("getFavorite", function(request, response) {
 				response.error(1);
 			} else {
 				var favoriates = new Array();
-				var i;
-				for ( i = 0; i < results.length; i++) {
+				for (var i = 0; i < results.length; i++) {
 					favoriates.push(results[i].get("itemId"));
 				}
 				var Item = AV.Object.extend("Item");
