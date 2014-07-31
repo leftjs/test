@@ -5,7 +5,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	// User's location
 	var userGeoPoint = new AV.GeoPoint({
 		latitude : request.params.latitude,
-		longitude : request.params.longitude
+		longitude : 119.787853
 	});
 	var Shops = AV.Object.extend("Shop");
 	var query = new AV.Query(Shops);
@@ -26,7 +26,7 @@ AV.Cloud.define("getItem", function(request, response) {
 					for (var i = 0; i < items.length; i++) {
 						for (var j = 0; j < shops.length; j++) {
 							if (items[i].get("shopId") == shops[j].id) {
-								items[i].set("shopName", shops[j].get("name"));
+								items[i].set("shopName", "你妹妹");
 								items[i].set("location", shops[j].get("location"));
 								break;
 							}
