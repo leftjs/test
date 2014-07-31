@@ -5,14 +5,14 @@ AV.Cloud.define("getItem", function(request, response) {
 	// User's location
 	var userGeoPoint = new AV.GeoPoint({
 		latitude : request.params.latitude,
-		longitude : 118.807853
+		longitude : request.params.longitude
 	});
 	var Shops = AV.Object.extend("Shop");
 	var query = new AV.Query(Shops);
 	query.withinKilometers("location", userGeoPoint, 6);
 	query.find().then(function(shops) {
 		if (shops.length == 0) {
-			//返回特殊值 显示无服务
+			//处理显示无信息
 			response.error("失败");
 		} else {
 			var shopIds = new Array();
@@ -27,7 +27,7 @@ AV.Cloud.define("getItem", function(request, response) {
 					for (var i = 0; i < items.length; i++) {
 						for (var j = 0; j < shops.length; j++) {
 							if (items[i].get("shopId") == shops[j].id) {
-								items[i].set("shopName", "你妹妹");
+								items[i].set("shopName", shops[j].get("name"));
 								items[i].set("location", shops[j].get("location"));
 								break;
 							}
