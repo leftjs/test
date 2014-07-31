@@ -18,7 +18,6 @@ AV.Cloud.define("getItem", function(request, response) {
 			for (var i = 0; i < shops.length; i++) {
 				shopIds.push(shops[i].id);
 			}
-			response.success(shopIds);
 			var Item = AV.Object.extend("Item");
 			var query = new AV.Query(Item);
 			query.containedIn("shopId", shopIds);
@@ -26,7 +25,7 @@ AV.Cloud.define("getItem", function(request, response) {
 				success : function(items) {
 					for (var i = 0; i < items.length; i++) {
 						for (var j = 0; j < shops.length; j++) {
-							if (items[i].get("shopId") == shops[j].get("objectId")) {
+							if (items[i].get("shopId") == shops[j].id) {
 								items[i].set("shopName", shops[j].get("name"));
 								items[i].set("location", shops[j].get("location"));
 								break;
