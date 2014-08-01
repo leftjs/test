@@ -13,7 +13,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	query.find().then(function(shops) {
 		if (shops.length == 0) {
 			//处理显示无信息
-			response.error("失败");
+			response.error(1);
 		} else {
 			var shopIds = new Array();
 			for (var i = 0; i < shops.length; i++) {
