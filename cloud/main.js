@@ -13,7 +13,7 @@ AV.Cloud.define("getItem", function(request, response) {
 	query.find().then(function(shops) {
 		if (shops.length == 0) {
 			//处理显示无信息
-			response.error("你好");
+			response.error(2);
 		} else {
 			var shopIds = new Array();
 			for (var i = 0; i < shops.length; i++) {
@@ -57,7 +57,7 @@ AV.Cloud.define("getFavorite", function(request, response) {
 	query.find({
 		success : function(results) {
 			if (results.length == 0) {
-				response.error("你好");
+				response.error(2);
 			} else {
 				var favoriates = new Array();
 				for (var i = 0; i < results.length; i++) {
