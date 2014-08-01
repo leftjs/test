@@ -128,7 +128,7 @@ AV.Cloud.beforeSave("Favorite", function(request, response) {
 			if (count == 0)
 				response.success();
 			else
-				response.error(1);
+				response.error("你好");
 		},
 		error : function(error) {
 			response.error();
