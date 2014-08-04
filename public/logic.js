@@ -2,35 +2,27 @@
 var popup;
 //购物车集合
 var shoppoingCart = new Array();
-
+//下单结果数组
+var results = new Array();
+//下单计数器
+var orderCount = 0;
 //加载主页商品
 function loadItemMainPanel(Items) {
-	var geo = new AV.GeoPoint({
+	var userGeo = new AV.GeoPoint({
 		latitude : 31.717531,
 		longitude : 118.787853
 	});
-	for ( i = 0; i < Items.length; i++) {
-		var $span = ("<span>" + "距您" + geo.kilometersTo(Items[i].location).toFixed(2) + "km" + "</span>");
-		var $p2 = $("<p></p>");
-		$p2.attr("class", "item_description");
-		$p2.append(Items[i].shopName, $span);
-		var $p1 = $("<p></p>");
-		$p1.css("font-size", "25px");
-		$p1.append(Items[i].name);
-		var $div = $("<div></div>");
-		$div.append($p1, $p2);
-		var $img = $("<img></img>");
-		$img.attr("src", Items[i].smallImage._url);
-		var $li = $("<li></li>");
-		var $a = $("<a></a>");
-		$a.append($img, $div);
-		var setItem = "localStorage.setItem('itemId', " + "'" + Items[i].objectId + "'" + ")";
-		$a.attr('onclick', setItem);
-		$a.attr("href", "#buy_panel");
-		$a.attr("data-transition", "pop");
-		$li.append($a);
-		$("#main_panel ul").append($li);
+	for (var i = 0; i < Items.length; i++) {
+		var itemGeo = new AV.GeoPoint({
+			latitude : Items[i].location.latitude,
+			longitude : Items[i].location.longitude
+		});
+		var li = "<li><a data-transition='pop' data-id='" + Items[i].objectId + "' href='#buy_panel'><img src='" + Items[i].smallImage._url + "'><div><p>" + Items[i].name + "<span>" + Items[i].price + "元</span></p><p>" + Items[i].shopName + "<span>距您" + userGeo.kilometersTo(itemGeo).toFixed(2) + "km</span></p></div></a></li>";
+		$("#main_panel ul").append(li);
 	}
+	$("#main_panel > div >  ul > li > a").click(function() {
+		localStorage.setItem("itemId", $(this).attr("data-id"));
+	});
 }
 
 //初始化广告
@@ -39,49 +31,50 @@ function initAdvertise() {
 	var query = new AV.Query(ad);
 	query.descending("updatedAt");
 	query.limit(4);
-	query.find({
-		success : function(results) {
-			for (var i = 0; i < results.length; i++) {
-				var $img = $("<img></img>");
-				$img.attr("src", results[i].get("picture").url());
-				$("#slider").append($img);
-			}
-			$('#slider').nivoSlider();
-		},
-		error : function(error) {
-			alert("Error: " + error.code + " " + error.message);
+	query.find().then(function(results) {
+		for (var i = 0; i < results.length; i++) {
+			var $img = $("<img></img>");
+			$img.attr("src", results[i].get("picture").url());
+			$("#slider").append($img);
 		}
+		$('#slider').nivoSlider();
+	}, function(error) {
+		alert("Error: " + error.code + " " + error.message);
 	});
 }
 
 //加载购买面板
 function buyPanelLoad() {
-	var imageUrl;
-	var description;
-	var itemName;
-	var price;
-	var item = AV.Object.extend("Item");
-	var query = new AV.Query(item);
-	query.get(localStorage.getItem('itemId'), {
-		success : function(item) {
-			// The object was retrieved successfully.
-			$("#buy_panel #item_pic_big").attr('src', item.get('bigImage').url());
-			$("#buy_panel #item_name").html(item.get("name"));
-			$("#price_detail span").html(item.get("price"));
-			$("#buy_panel #description").html(item.get("description"));
-		},
-		error : function(object, error) {
-			alert("加载失败" + error.message);
-		}
+	var Item = AV.Object.extend("Item");
+	var query = new AV.Query(Item);
+	query.get(localStorage.getItem('itemId')).then(function(item) {
+		$("#buy_panel #item_pic_big").attr('src', item.get('bigImage').url());
+		$("#buy_panel #item_name").html(item.get("name"));
+		$("#price_detail span").html(item.get("price"));
+		$("#buy_panel #description").html(item.get("description"));
+	}, function(object, error) {
+		alert("加载失败" + error.message);
 	});
 }
 
 //收藏
 function collect() {
-	if (shoppoingCart.length) {
-		$("#shopping_cart_panel ul").empty();
+	var currentUser = AV.User.current();
+	if (currentUser) {
+		var Favorite = AV.Object.extend("Favorite");
+		var favorite = new Favorite();
+		favorite.set("userId", currentUser.id);
+		favorite.set("itemId", localStorage.getItem('itemId'));
+		favorite.save().then(function(favorite) {
+			popup = af("#afui").popup("收藏成功");
+		}, function(favorite, error) {
+			if (error.message[error.message.length - 1] == 2)
+				popup = af("#afui").popup("您不需要重复收藏");
+			else
+				popup = af("#afui").popup("收藏失败");
+		});
 	} else {
-		// show the signup or login page
+		//登录
 		popup = loginPop();
 	}
 }
@@ -91,17 +84,30 @@ function addToShoppingCart() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
 		var flag = false;
+		var itemId = localStorage.getItem('itemId');
 		for ( i = 0; i < shoppoingCart.length; i++) {
-			if (localStorage.getItem('itemId') == shoppoingCart[i]) {
+			if (itemId == shoppoingCart[i]) {
 				flag = true;
+				popup = af("#afui").popup("您不需要重复添加");
 				break;
 			}
 		}
 		if (flag == false) {
-			shoppoingCart.push(localStorage.getItem('itemId'));
+			shoppoingCart.push(itemId);
+			popup = af("#afui").popup({
+				title : "添加成功",
+				message : "您是否需要？",
+				cancelText : "继续购买",
+				cancelCallback : function() {
+				},
+				doneText : "前往付款",
+				doneCallback : function() {
+					af.ui.loadContent("#shopping_cart_panel", false, false, false);
+				},
+				cancelOnly : false
+			});
 		}
 	} else {
-		// show the signup or login page
 		popup = loginPop();
 	}
 }
@@ -119,11 +125,11 @@ function loginPop() {
 			AV.User.logIn($("#phone_number_login").val(), $("#password_login").val(), {
 				success : function(user) {
 					// Do stuff after successful login.
-					alert("成功");
+					popup = af("#afui").popup("登录成功");
 				},
 				error : function(user, error) {
 					// The login failed. Check error to see why.
-					alert(error.message);
+					popup = af("#afui").popup("登录成功");
 				}
 			});
 		},
@@ -155,9 +161,6 @@ function registerPop() {
 				user.set("password", $('#password_register').val());
 				user.set("numberVerified", false);
 				// 更新地理位置信息
-				//	user.set("location", Geolocation);
-				//	user.set("adress", Adress);
-
 				user.signUp(null, {
 					success : function(user) {
 						// Hooray! Let them use the app now.
@@ -185,20 +188,20 @@ function CollectPanelLoad() {
 				$("#collect_panel ul").empty();
 				$('#collect_panel #no_collect_tip_img_collect_panel').remove();
 				for ( i = 0; i < result.length; i++) {
-					var li = "<li><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' /></div></li>";
+					var li = "<li id='" + result[i].objectId + "' ><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this)' /></div></li>";
 					$("#collect_panel ul").append(li);
 				}
 			},
 			error : function(error) {
-				alert(error.message);
+				$("#collect_panel ul").empty();
+				if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
+					var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
+					$("#collect_panel > div").append(img);
+				}
 			}
 		});
 	} else {
-		$("#collect_panel ul").empty();
-		if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
-			var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
-			$("#collect_panel > div").append(img);
-		}
+		popup = loginPop();
 	}
 }
 
@@ -210,24 +213,27 @@ function shoppingCartPanelLoad() {
 			"itemIds" : shoppoingCart
 		}, {
 			success : function(result) {
-				alert(result.length);
-				$("#shopping_cart_panel ul").empty();
-				for ( i = 0; i < result.length; i++) {
-					var li = "<li " + "value='" + result[i].price + "'><div value='" + result[i].objectId + "'><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].shopName + "</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
-					$("#shopping_cart_panel ul").append(li);
+				if (result.length == 0) {
+					$("#shopping_cart_panel ul").empty();
+					if ($('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').length == 0) {
+						var img = "<img id='no_shopping_cart_tip_img_collect_panel' src='images/no_shopping_cart_item.png' />";
+						$("#shopping_cart_panel > div").append(img);
+					}
+				} else {
+					$("#shopping_cart_panel ul").empty();
+					$('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').remove();
+					for ( i = 0; i < result.length; i++) {
+						var li = "<li " + "data-price='" + result[i].price + "' data-id='" + result[i].objectId + "'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].price + "元</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
+						$("#shopping_cart_panel ul").append(li);
+					}
+					changePrice();
 				}
-				changePrice();
 			},
 			error : function(error) {
-				alert(error.message);
 			}
 		});
 	} else {
-		$("#shopping_cart_panel ul").remove();
-		if (!$('#shopping_cart_panel #no_collect_tip_img_collect_panel').attr('src')) {
-			var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
-			$("#shopping_cart_panel > div").append(img);
-		}
+		popup = loginPop();
 	}
 }
 
@@ -252,44 +258,141 @@ function changePrice() {
 	var count = 0;
 	for ( i = 0; i < $("#shopping_cart_panel ul li").length; i++) {
 		var $li = $("#shopping_cart_panel ul li").eq(i);
-		var value = $li.val();
+		var value = $li.attr('data-price');
 		var piece = parseInt($li.find("span").html());
-		count += $li.val() * $li.find("span").html();
+		count += value * piece;
 	}
 	$("#navbar  footer p span").html(count);
 }
 
-//下单函数
+//下单处理函数
 function placeOrder() {
 	if (shoppoingCart.length == 0) {
-		popup = af("#afui").popup({
-			title : "提示",
-			message : "您的购物车内没有任何物品"
-		});
+		popup = af("#afui").popup("您的购物车内没有任何物品");
 	} else {
-		AV.Cloud.run('placeOrder', {
-			"latitude" : 31.717531,
-			"longitude" : 118.787853,
-			"userId" : AV.User.current().id,
-			"items" : shoppoingCart
-		}, {
-			success : function(result) {
-				popup = af("#afui").popup("下单成功，请等待送货");
-				shoppoingCart.length = 0;
-			},
-			error : function(error) {
-				popup = af("#afui").popup(error.message);
+		var currentUser = AV.User.current();
+		var Order = AV.Object.extend("Order");
+		var order = new Order();
+		order.set("userId", currentUser.id);
+		order.set("state", 1);
+		order.set("location", new AV.GeoPoint({
+			latitude : 31.717531,
+			longitude : 118.787853
+		}));
+		order.save().then(function(order) {
+			var OrderDetail = AV.Object.extend("OrderDetail");
+			var orderDetail = new OrderDetail();
+			orderDetail.set("orderId", order.id);
+			for (var i = 0; i < shoppoingCart.length; i++) {
+				var $li = $("#shopping_cart_panel ul li").eq(i);
+				orderDetail.set("itemId", $li.attr("data-id"));
+				orderDetail.set("piece", parseInt($li.find("span").html()));
+				orderDetail.save().then(function(order) {
+					result(i, "ok");
+				}, function(order, error) {
+					result(i, "error");
+				});
 			}
+		}, function(order, error) {
+			popup = af("#afui").popup("下单失败");
 		});
+	}
+}
+
+//下单结果
+function result(id, result) {
+	orderCount++;
+	results[id] = result;
+	var flag = true;
+	if (orderCount == shoppoingCart.length) {
+		for (var i; i < orderCount; i++) {
+			if (results[i] == "error") {
+				flag = false;
+				var Item = AV.Object.extend("Item");
+				var query = new AV.Query(Item);
+				query.get(shoppoingCart[i]).then(function(item) {
+					popup = af("#afui").popup(item.name + "下单失败");
+				}, function(object, error) {
+					popup = af("#afui").popup("下单失败，请联系QQ:2815859682");
+				});
+			}
+		}
+		if (flag) {
+			results.length = 0;
+			orderCount = 0;
+			popup = af("#afui").popup("下单成功，请等待送货");
+			//清空购物车 清空视图层
+			shoppoingCart.length = 0;
+			shoppingCartPanelLoad();
+		}
 	}
 }
 
 //删除购物车函数
 function deleteShoppingCart(node) {
 	for ( i = 0; i < shoppoingCart.length; i++) {
-		if ($(node).parent().val() == shoppoingCart[i]) {
+		if ($(node).parent().parent().attr('data-id') == shoppoingCart[i]) {
 			shoppoingCart.splice(i, 1);
 		}
 	}
 	$(node).parent().parent().remove();
+	if ($('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').length == 0) {
+		var img = "<img id='no_shopping_cart_tip_img_collect_panel' src='images/no_shopping_cart_item.png' />";
+		$("#shopping_cart_panel > div").append(img);
+	}
+	changePrice();
 }
+
+//删除收藏函数
+function deleteCollect(node) {
+	var currentUser = AV.User.current();
+	var Favorite = AV.Object.extend("Favorite");
+	var query = new AV.Query(Favorite);
+	query.equalTo("userId", currentUser.id);
+	query.equalTo("itemId", $(node).parent().parent().attr('id'));
+	query.find().then(function(favorite) {
+		AV.Object.destroyAll(favorite);
+		$(node).parent().parent().remove();
+	}, function(favorite, error) {
+		popup = af("#afui").popup("失败");
+	});
+}
+
+//反馈框
+function fadeBackPop() {
+	var currentUser = AV.User.current();
+	if (currentUser) {
+		popup = af("#afui").popup({
+			title : "用户反馈",
+			message : "内容: <textarea id='fade_back_content' rows='10' cols='30' style='webkit-text-security:disc;height:200px;' ></textarea>",
+			cancelText : "取消",
+			cancelCallback : function() {
+			},
+			doneText : "反馈",
+			doneCallback : function() {
+				if ($("#fade_back_content").val() == "")
+					alert("请输入内容");
+				else {
+					var FadeBack = AV.Object.extend("FadeBack");
+					var fadeBack = new FadeBack();
+					fadeBack.set("userId", currentUser.id);
+					fadeBack.set("content", $("#fade_back_content").val());
+					fadeBack.save().then(function(fadeBack) {
+						popup = af("#afui").popup("反馈成功");
+					}, function(fadeBack, error) {
+						popup = af("#afui").popup("反馈失败");
+					});
+				}
+			},
+			cancelOnly : false
+		});
+	} else {
+		popup = loginPop();
+	}
+}
+
+//关于我们
+function aboutPop() {
+	popup = af("#afui").popup("艺术家团队是南京邮电大学通达学院一支大学生创业团队，立志为您打造不一样的网上购物体验，我们后续还会推出除食品外的其它商品，让您足不出户，买遍全城。联系QQ：2815859682");
+}
+

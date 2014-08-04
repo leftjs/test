@@ -25,7 +25,9 @@
 		<script type="text/javascript" src="./scripts/jquery-1.9.0.min.js"></script>
 		<script type="text/javascript" src="jquery.nivo.slider.js"></script>
 		<script type="text/javascript" src="logic.js"></script>
-		<!--项目中常用的一些插件-->
+		<!--测试用 最后删除-->
+		<script type="text/javascript" charset="utf-8" src="./plugins/af.desktopBrowsers.js"></script>
+		<!--项目中常用的一些插件   上架时删除-->
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
@@ -41,13 +43,6 @@
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
-		<script>
-			if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-				var script = document.createElement("script");
-				script.src = "plugins/af.desktopBrowsers.js";
-				var tag = $("head").append(script);
-			}
-		</script>
 		<!--	<script text="text/javascript" src="cordova.js"></script>-->
 		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
 		<script type="text/javascript" charset="utf-8">
@@ -72,13 +67,18 @@
 				//	}
 				/*-----------------初始化商品--------------------------*/
 				AV.Cloud.run('getItem', {
-					"latitude" : 31.717531,
+					"latitude" : 31.767531,
 					"longitude" : 118.787853
 				}, {
 					success : function(result) {
 						loadItemMainPanel(result);
 					},
 					error : function(error) {
+						if (error.message == 2) {
+							$("#main_panel ul").remove();
+							var img = "<img id='no_sevice_tip_img_main_panel' src='images/no_service_tip.png' />";
+							$("#main_panel > div").append(img);
+						}
 						alert(error.message);
 					}
 				});
@@ -106,258 +106,6 @@
 			 */
 
 		</script>
-
-		<style type="text/css">
-			.float_left {
-				float:left;
-			}
-			.float_right {
-				float:right;
-			}
-			#afui #main_panel {
-				background:#FFFFFF
-			}
-			#afui #menu_scroller {
-				height:100%;
-				background:#22252A;
-			}
-			nav ul li {
-				background:#22252A;
-				font-size:25px;
-			}
-			#afui.ios7 #menu .list li {
-				border-bottom-color:#41464A;
-			}
-			#afui.ios7 #header {
-				background:#5CC2D1;
-			}
-			#main_panel ul li {
-				height:80px;
-				overflow:hidden;
-			}
-			#main_panel ul li img {
-				float:left;
-				height:80px;
-				border-radius:15px;
-			}
-			#main_panel ul li a {
-				display:block;
-				height:80px;
-			}
-			#main_panel ul li div {
-				float:left;
-			}
-			#main_panel ul li div p span {
-				margin-left:15px;
-				margin-left:5px;
-			}
-			#afui p.item_description {
-				margin-top:25px;
-				margin-left:5px;
-			}
-			#afui #menu .list> li> a {
-				font-size:25px;
-				font-family:"黑体";
-			}
-			#afui #menu .list> li {
-				color:#383B40;
-			}
-			#afui.ios7 #menu .list a {
-				color:#383B40;
-			}
-			#afui .panel {
-				padding-left:0px;
-				padding-right:0px;
-			}
-			a {
-				text-decoration:none;
-				color:#000000;
-			}
-			#afui.ios7 #buy_panel {
-				background:#5CC2D1;
-			}
-			#buy_panel {
-				text-align:center;
-			}
-			#buy_panel img {
-				width:135px;
-				height:135px;
-				margin:auto;
-				display:block;
-				border-radius:15px;
-			}
-			#buy_panel a img {
-				margin:30px 0px 30px 30px;
-				height:35px;
-				width:35px;
-			}
-			#buy_panel a {
-				display:block;
-			}
-			#buy_panel #price_detail {
-				font-size:20px;
-				font-family:"黑体";
-				margin-top:15px;
-			}
-			#buy_panel #description {
-				color:green;
-				margin:13px;
-			}
-			#buy_panel div> div> img {
-				height:70px;
-				width:220px;
-				margin-top:20px;
-			}
-			#buy_panel #buy_panel_item_name {
-				margin-top:20px;
-				color:white;
-				font-size:30px;
-			}
-			#user_panel #user_panel_bg {
-				height:300px;
-				width:100%;
-				background:#00ADEF;
-				padding-top:60px;
-			}
-			#user_panel #user_panel_bg> img {
-				display:block;
-				margin:0px auto 30px;
-				height:120px;
-				width:120px;
-				border-radius:15px;
-			}
-			#user_panel #user_panel_function_region  img {
-				float:left;
-				width:33.33333%;
-			}
-			#shopping_cart_panel ul li {
-				height:132px;
-			}
-			#shopping_cart_panel ul li> div:first-child> div {
-				height:80px;
-				float:left;
-			}
-			#shopping_cart_panel ul li> div:first-child> div> p:nth-child(2) {
-				margin-top:20px;
-			}
-			#shopping_cart_panel ul li> div:first-child> div> p:first-child {
-				font-size:25px;
-			}
-			#shopping_cart_panel ul li> div:first-child {
-				height:82px;
-				border-bottom:2px solid #41464A;
-			}
-			#shopping_cart_panel ul li> div:nth-child(2) {
-				height:50px;
-				line-height:50px;
-				float:right;
-				font-size:25px;
-			}
-			#shopping_cart_panel ul li> div:nth-child(2)> img {
-				float:none;
-				width:50px;
-				height:50px;
-			}
-			#shopping_cart_panel ul li img {
-				height:80px;
-				float:left;
-				border-radius:15px;
-			}
-			#shopping_cart_panel ul li img.delete_shopping_cart_panel {
-				float:right;
-			}
-			#shopping_cart_panel> div> ul> li> div> div {
-				float:left;
-			}
-			#shopping_cart_panel> div> div> p {
-				font-size:30px;
-				color:#00ADE9;
-			}
-			#shopping_cart_panel> div> div> img {
-				width:30px;
-				height:30px;
-				float:left;
-				margin-right:20px;
-			}
-			#shopping_cart_panel> div> div {
-				font-size:30px;
-				color:#00ADE9;
-				border-bottom:5px dashed #00ADE9;
-				margin-bottom:10px;
-				padding:10px 20px;
-			}
-			#collect_panel ul  img {
-				height:80px;
-				float:left;
-				border-radius:15px;
-			}
-			#collect_panel> div> div> p {
-				font-size:30px;
-				color:#00ADE9;
-			}
-			#collect_panel> div> div> img {
-				width:30px;
-				height:30px;
-				float:left;
-				margin-right:20px;
-			}
-			#collect_panel> div> ul> li> div> div {
-				float:left;
-				height:80px;
-			}
-			#collect_panel> div> ul> li {
-				height:80px;
-			}
-			#collect_panel> div> ul> li> div> div> p {
-				float:left;
-				height:80px;
-				line-height:80px;
-				font-size:40px;
-				margin-left:10px;
-				color:#C958DA;
-				font-family:"微软雅黑";
-				margin-top:-5px;
-			}
-			#collect_panel> div> div {
-				font-size:30px;
-				color:#00ADE9;
-				border-bottom:5px dashed #00ADE9;
-				margin-bottom:10px;
-				padding:10px 20px;
-			}
-			#collect_panel .delete_collect_panel {
-				float:right;
-				width:45px;
-				height:45px;
-				margin:20px 20px 0px 0px;
-			}
-			#collect_panel #no_collect_tip_img_collect_panel {
-				width:312.5px;
-				height:250px;
-				margin:20px auto;
-				display:block;
-			}
-			#collect_panel ul {
-				list-style-type:none;
-			}
-			#navbar  footer a {
-				float:right;
-				height:50px;
-				width:25px;
-			}
-			#navbar  footer img {
-				float:right;
-				height:50px;
-				width:100px;
-				margin-top:3px;
-			}
-			#navbar  footer p {
-				height:50px;
-				float:left;
-				line-height:50px;
-				font-size:20px;
-			}
-		</style>
 	</head>
 	<body>
 		<div id="afui" class="bb">
@@ -370,28 +118,10 @@
 							购物车
 						</p>
 					</div>
-					<ul style="list-style-type:none">
-						<li value="100">
-							<div value="53c63cbbe4b0850e96eb41dc">
-								<img src="http://ac-hhdpk5vy.qiniudn.com/ko6KmVhnJVMB6evga8VYfNNpOwuYX0k143mbrXIH.jpg"></img>
-								<div>
-									<p>
-										辣汤鸡
-									</p>
-									<p>
-										20元
-									</p>
-								</div>
-								<img class="delete_shopping_cart_panel" src="images/delete.png" onclick='deleteShoppingCart(this)' />
-							</div>
-							<div>
-								我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件
-							</div>
-						</li>
-					</ul>
+					<ul></ul>
 					<footer>
 						<p>
-							当前购物车总价：￥<span>0</span>
+							当前购物车总价(含运费)：￥<span>0</span>
 						</p>
 						<img onclick="placeOrder()" src="images/placeOrderBtn.png" />
 					</footer>
@@ -411,7 +141,7 @@
 					<div class="slider-wrapper theme-default">
 						<div id="slider" class="nivoSlider"></div>
 					</div>
-					<ul style="list-style-type:none"></ul>
+					<ul></ul>
 				</div>
 				<!------------------------------------------------------购买------------------------------------------------------------>
 				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="none" data-load="buyPanelLoad">
@@ -432,15 +162,15 @@
 					<div id="user_panel_bg">
 						<img src="images/logo.png" />
 					</div>
-					<div id="user_panel_function_region" style="margin: 0px 10px;">
-						<a><img src="images/share_normal.png"/></a>
-						<a><img src="images/fade_back_nomal.png" style="margin-top: -5px;" /></a>
-						<a><img src="images/collect_nomal.png" /></a>
+					<div id="user_panel_function_region">
+						<a><img src="images/about_nomal.png" onclick="aboutPop()" /></a>
+						<a><img src="images/fade_back_nomal.png" onclick="fadeBackPop()" /></a>
+						<a href="#collect_panel"><img src="images/collect_nomal.png" /></a>
 					</div>
 				</div>
 				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
-					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png"style="width: 45px;height: 45px;float: left;" /></a>
+					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png" /></a>
 					<h1>懒了</h1>
 				</header>
 				<!------------------------------------------------------导航------------------------------------------------------------>
@@ -457,9 +187,6 @@
 						</li>
 						<li>
 							<a href="#shopping_cart_panel">购物车</a>
-						</li>
-						<li>
-							<a href="#collect_panel">收藏</a>
 						</li>
 						<li style="border-bottom-color: #41464A;">
 							<a href="#user_panel">用户中心</a>

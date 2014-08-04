@@ -22,22 +22,19 @@ AV.Cloud.define("getItem", function(request, response) {
 			var Item = AV.Object.extend("Item");
 			var query = new AV.Query(Item);
 			query.containedIn("shopId", shopIds);
-			query.find({
-				success : function(items) {
-					for (var i = 0; i < items.length; i++) {
-						for (var j = 0; j < shops.length; j++) {
-							if (items[i].get("shopId") == shops[j].id) {
-								items[i].set("shopName", shops[j].get("name"));
-								items[i].set("location", shops[j].get("location"));
-								break;
-							}
+			query.find().then(function(items) {
+				for (var i = 0; i < items.length; i++) {
+					for (var j = 0; j < shops.length; j++) {
+						if (items[i].get("shopId") == shops[j].id) {
+							items[i].set("shopName", shops[j].get("name"));
+							items[i].set("location", shops[j].get("location"));
+							break;
 						}
 					}
-					response.success(items);
-				},
-				error : function(error) {
-					response.error(error.message);
 				}
+				response.success(items);
+			}, function(error) {
+				response.error(error.message);
 			});
 		}
 	}, function(error) {
@@ -54,31 +51,25 @@ AV.Cloud.define("getFavorite", function(request, response) {
 	var favoriateItem = AV.Object.extend("Favorite");
 	var query = new AV.Query(favoriateItem);
 	query.equalTo("userId", request.params.userId);
-	query.find({
-		success : function(results) {
-			if (results.length == 0) {
-				response.error(2);
-			} else {
-				var favoriates = new Array();
-				for (var i = 0; i < results.length; i++) {
-					favoriates.push(results[i].get("itemId"));
-				}
-				var Item = AV.Object.extend("Item");
-				var query = new AV.Query(Item);
-				query.containedIn("objectId", favoriates);
-				query.find({
-					success : function(results) {
-						response.success(results);
-					},
-					error : function(error) {
-						response.error(error.message);
-					}
-				});
+	query.find().then(function(results) {
+		if (results.length == 0) {
+			response.error(2);
+		} else {
+			var favoriates = new Array();
+			for (var i = 0; i < results.length; i++) {
+				favoriates.push(results[i].get("itemId"));
 			}
-		},
-		error : function(error) {
-			response.error(error.message);
+			var Item = AV.Object.extend("Item");
+			var query = new AV.Query(Item);
+			query.containedIn("objectId", favoriates);
+			query.find().then(function(results) {
+				response.success(results);
+			}, function(error) {
+				response.error(error.message);
+			});
 		}
+	}, function(error) {
+		response.error(error.message);
 	});
 });
 //获取购物车
@@ -86,13 +77,10 @@ AV.Cloud.define("getShoppingCart", function(request, response) {
 	var Item = AV.Object.extend("Item");
 	var query = new AV.Query(Item);
 	query.containedIn("objectId", request.params.itemIds);
-	query.find({
-		success : function(results) {
-			response.success(results);
-		},
-		error : function(error) {
-			response.error(error.message);
-		}
+	query.find().then(function(results) {
+		response.success(results);
+	}, function(error) {
+		response.error(error.message);
 	});
 });
 //下单处理函数
@@ -108,13 +96,10 @@ AV.Cloud.define("placeOrder", function(request, response) {
 	order.set("location", location);
 	order.set("userId", request.params.userId);
 	order.set("state", 1);
-	order.save(null, {
-		success : function(order) {
-			response.success();
-		},
-		error : function(order, error) {
-			response.error(error.description);
-		}
+	order.save().then(function(order) {
+		response.success();
+	}, function(order, error) {
+		response.error(error.description);
 	});
 });
 //收藏去重
