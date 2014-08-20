@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--HTML5 doctype-->
 <html>
 	<head>
 		<title>懒了</title>
@@ -43,69 +42,9 @@
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
-		<!--	<script text="text/javascript" src="cordova.js"></script>-->
+		<!--<script text="text/javascript" src="cordova.js"></script>-->
 		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
-		<script type="text/javascript" charset="utf-8">
-			// 等待PhoneGap加载
-			//	document.addEventListener("deviceready", onDeviceReady, false);
-			// 加载完成
-			$(document).ready(function() {
-				// 初始化 param1：应用 id、param2：应用 key
-				AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
-				$("#afui").get(0).className = 'ios7';
-				/*-----------------变量区--------------------------*/
-				var latitude = 0;
-				var longitude = 0;
-				/*-----------------初始化广告--------------------------*/
-				initAdvertise();
-				/*-----------------初始化地理位置--------------------------*/
-				//geolocation.getCurrentPosition();
-				//	if (navigator.geolocation) {
-				//		navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-				//	} else {
-				//		alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
-				//	}
-				/*-----------------初始化商品--------------------------*/
-				AV.Cloud.run('getItem', {
-					"latitude" : 31.767531,
-					"longitude" : 118.787853
-				}, {
-					success : function(result) {
-						loadItemMainPanel(result);
-					},
-					error : function(error) {
-						if (error.message == 2) {
-							$("#main_panel ul").remove();
-							var img = "<img id='no_sevice_tip_img_main_panel' src='images/no_service_tip.png' />";
-							$("#main_panel > div").append(img);
-						}
-						alert(error.message);
-					}
-				});
-			});
-			/*			function successFunction(position) {
-			 latitude = position.coords.latitude;
-			 longitude = position.coords.longitude;
-			 -----------------初始化商品--------------------------
-			 AV.Cloud.run('getItem', {
-			 "latitude" : latitude,
-			 "longitude" : longitude
-			 }, {
-			 success : function(result) {
-			 loadItemMainPanel(result);
-			 },
-			 error : function(error) {
-			 alert(error.message);
-			 }
-			 });
-			 }
-
-			 function errorFunction() {
-			 alert("定位失败，请打开gps，并给予懒了足够的权限");
-			 }
-			 */
-
-		</script>
+		<script type="text/javascript" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div id="afui" class="bb">
@@ -127,7 +66,7 @@
 					</footer>
 				</div>
 				<!------------------------------------------------------收藏------------------------------------------------------------>
-				<div title="收藏" id="collect_panel" class="panel" data-footer="none" data-header="topBar" data-load="CollectPanelLoad">
+				<div title="收藏" id="collect_panel" class="panel" data-footer="none"data-load="CollectPanelLoad">
 					<div>
 						<img src="images/collect_logo.png" />
 						<p>
@@ -135,6 +74,10 @@
 						</p>
 					</div>
 					<ul></ul>
+					<header id="topBar_collect_panel">
+						<a onclick="af.ui.goBack()"><img src="images/goBack.png" /></a>
+						<h1>懒了</h1>
+					</header>
 				</div>
 				<!------------------------------------------------------主页------------------------------------------------------------>
 				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
@@ -175,20 +118,17 @@
 				</header>
 				<!------------------------------------------------------导航------------------------------------------------------------>
 				<nav>
-					<div style="height: 200px;width:200px;background: #272C30;">
-						<img src="images/logo.png" style="height: 100px;width: 100px;
-						margin:20px 50px 0px;border-radius: 15px;"/>
-						<p id="nav_phonenumber" style="color:white;font-size: 25px;text-align: center;"></p>
-						<p id="nav_adress" style="color:white;font-size: 15px;text-align: center;"></p>
+					<div>
+						<img src="images/logo.png"/>
 					</div>
 					<ul class="list">
-						<li style="border-bottom-color: #41464A;border-top-color: #41464A;">
+						<li>
 							<a href="#main_panel">推荐</a>
 						</li>
 						<li>
 							<a href="#shopping_cart_panel">购物车</a>
 						</li>
-						<li style="border-bottom-color: #41464A;">
+						<li>
 							<a href="#user_panel">用户中心</a>
 						</li>
 					</ul>

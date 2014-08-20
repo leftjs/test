@@ -6,6 +6,70 @@ var shoppoingCart = new Array();
 var results = new Array();
 //下单计数器
 var orderCount = 0;
+//手机号
+var phoneNumber;
+
+// 等待PhoneGap加载
+//	document.addEventListener("deviceready", onDeviceReady, false);
+$(document).ready(function() {
+	// 初始化 param1：应用 id、param2：应用 key
+	AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
+	$("#afui").get(0).className = 'ios7';
+	/*-----------------变量区--------------------------*/
+	var latitude = 0;
+	var longitude = 0;
+	/*-----------------初始化广告--------------------------*/
+	initAdvertise();
+	/*-----------------初始化地理位置--------------------------*/
+	//geolocation.getCurrentPosition();
+	//	if (navigator.geolocation) {
+	//		navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+	//	} else {
+	//		alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+	//	}
+	getItemData();
+	checkVersion();
+});
+/*			function successFunction(position) {
+latitude = position.coords.latitude;
+longitude = position.coords.longitude;
+-----------------初始化商品--------------------------
+AV.Cloud.run('getItem', {
+"latitude" : latitude,
+"longitude" : longitude
+}, {
+success : function(result) {
+loadItemMainPanel(result);
+},
+error : function(error) {
+alert(error.message);
+}
+});
+}
+function errorFunction() {
+alert("定位失败，请打开gps，并给予懒了足够的权限");
+}
+*/
+
+//获取主页商品数据
+function getItemData() {
+	AV.Cloud.run('getItem', {
+		"latitude" : 31.717531,
+		"longitude" : 118.787853
+	}, {
+		success : function(result) {
+			loadItemMainPanel(result);
+		},
+		error : function(error) {
+			if (error.message == 2) {
+				$("#main_panel ul").remove();
+				var img = "<img id='no_sevice_tip_img_main_panel' src='images/no_service_tip.png' />";
+				$("#main_panel > div").append(img);
+			}
+		}
+	});
+}
+
 //加载主页商品
 function loadItemMainPanel(Items) {
 	var userGeo = new AV.GeoPoint({
@@ -17,19 +81,21 @@ function loadItemMainPanel(Items) {
 			latitude : Items[i].location.latitude,
 			longitude : Items[i].location.longitude
 		});
-		var li = "<li><a data-transition='pop' data-id='" + Items[i].objectId + "' href='#buy_panel'><img src='" + Items[i].smallImage._url + "'><div><p>" + Items[i].name + "<span>" + Items[i].price + "元</span></p><p>" + Items[i].shopName + "<span>距您" + userGeo.kilometersTo(itemGeo).toFixed(2) + "km</span></p></div></a></li>";
+		var li = "<li><a data-transition='pop' data-freight='" + userGeo.kilometersTo(itemGeo).toFixed(2) + "' data-id='" + Items[i].objectId + "' href='#buy_panel'><img src='" + Items[i].smallImage._url + "'><div><p>" + Items[i].name + "<span>" + Items[i].price + "元</span></p><p>" + Items[i].shopName + "<span>距您" + userGeo.kilometersTo(itemGeo).toFixed(2) + "km</span></p></div></a></li>";
 		$("#main_panel ul").append(li);
+		$("#main_panel > div >  ul > li > a").eq(i).click(function() {
+			localStorage.setItem("itemId", $(this).attr("data-id"));
+		});
 	}
-	$("#main_panel > div >  ul > li > a").click(function() {
-		localStorage.setItem("itemId", $(this).attr("data-id"));
-	});
+
 }
 
 //初始化广告
 function initAdvertise() {
 	var ad = AV.Object.extend("Advertise");
 	var query = new AV.Query(ad);
-	query.descending("updatedAt");
+	query.descending("createdAt");
+	query.equalTo("enable", true);
 	query.limit(4);
 	query.find().then(function(results) {
 		for (var i = 0; i < results.length; i++) {
@@ -67,7 +133,7 @@ function collect() {
 		favorite.set("itemId", localStorage.getItem('itemId'));
 		favorite.save().then(function(favorite) {
 			popup = af("#afui").popup("收藏成功");
-		}, function(favorite, error) {
+		}, function(error) {
 			if (error.message[error.message.length - 1] == 2)
 				popup = af("#afui").popup("您不需要重复收藏");
 			else
@@ -76,6 +142,7 @@ function collect() {
 	} else {
 		//登录
 		popup = loginPop();
+		collect();
 	}
 }
 
@@ -129,7 +196,7 @@ function loginPop() {
 				},
 				error : function(user, error) {
 					// The login failed. Check error to see why.
-					popup = af("#afui").popup("登录成功");
+					popup = af("#afui").popup("登录失败");
 				}
 			});
 		},
@@ -188,8 +255,11 @@ function CollectPanelLoad() {
 				$("#collect_panel ul").empty();
 				$('#collect_panel #no_collect_tip_img_collect_panel').remove();
 				for ( i = 0; i < result.length; i++) {
-					var li = "<li id='" + result[i].objectId + "' ><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this)' /></div></li>";
+					var li = "<li data-id='" + result[i].objectId + "' ><a data-transition='pop' href='#buy_panel'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this);return false;' /></div></a></li>";
 					$("#collect_panel ul").append(li);
+					$("#collect_panel ul > li > a").eq(i).click(function() {
+						localStorage.setItem("itemId", $(this).attr("data-id"));
+					});
 				}
 			},
 			error : function(error) {
@@ -356,6 +426,9 @@ function deleteCollect(node) {
 	}, function(favorite, error) {
 		popup = af("#afui").popup("失败");
 	});
+	$(node).parent().parent().click(function() {
+		return false;
+	});
 }
 
 //反馈框
@@ -396,3 +469,25 @@ function aboutPop() {
 	popup = af("#afui").popup("艺术家团队是南京邮电大学通达学院一支大学生创业团队，立志为您打造不一样的网上购物体验，我们后续还会推出除食品外的其它商品，让您足不出户，买遍全城。联系QQ：2815859682");
 }
 
+function checkVersion() {
+	var Version = AV.Object.extend("Version");
+	var query = new AV.Query(Version);
+	query.first().then(function(version) {
+		if (version.get("code") > 1) {
+			popup = af("#afui").popup({
+				title : "需要更新",
+				message : "更新内容:" + version.get("description"),
+				cancelText : "取消",
+				cancelCallback : function() {
+				},
+				doneText : "立即更新",
+				doneCallback : function() {
+					window.open(version.get("package").url(), "_system");
+				},
+				cancelOnly : false
+			});
+		}
+	}, function(error) {
+		alert("Error: " + error.code + " " + error.message);
+	});
+}

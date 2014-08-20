@@ -30,7 +30,7 @@ nav ul li {
 }
 #main_panel li div p:first-child {
 	font-size:25px;
-	color:pink;
+	color:#FF6699;
 }
 #main_panel li div p:first-child span {
 	margin-left:20px;
@@ -225,7 +225,7 @@ a {
 	display:block;
 	height:80px;
 }
-#collect_panel> div> ul> li> div> div> p {
+#collect_panel> div> ul> li> a> div> div> p {
 	float:left;
 	height:80px;
 	line-height:80px;
@@ -287,4 +287,27 @@ a {
 	width:45px;
 	height:45px;
 	float:left;
+}
+#header #topBar_collect_panel> a> img {
+	width:45px;
+	height:45px;
+	float:left;
+}
+nav> div {
+	height:200px;
+	width:200px;
+	background:#272C30;
+}
+nav> div> img {
+	height:100px;
+	width:100px;
+	margin:40px 50px 0px;
+	border-radius:15px;
+}
+#afui.ios7 #menu .list li:first-child {
+	border-bottom-color:#41464A;
+	border-top-color:#41464A;
+}
+#afui.ios7 #menu .list li:last-child {
+	border-bottom-color:#41464A;
 }
