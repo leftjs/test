@@ -38,7 +38,6 @@ AV.Cloud.define("getItem", function(request, response) {
 			});
 		}
 	}, function(error) {
-
 	});
 	// ({
 	// success : function(Items) {
