@@ -8,16 +8,20 @@ var results = new Array();
 var orderCount = 0;
 //手机号
 var phoneNumber;
-
+//路程对应价格数组
+var freight = [6, 6, 6, 10, 10, 15, 15];
+//公共位置数据
+var userGeo;
 // 等待PhoneGap加载
 //	document.addEventListener("deviceready", onDeviceReady, false);
 $(document).ready(function() {
 	// 初始化 param1：应用 id、param2：应用 key
 	AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
+	userGeo = new AV.GeoPoint({
+		latitude : 31.717531,
+		longitude : 118.787853
+	});
 	$("#afui").get(0).className = 'ios7';
-	/*-----------------变量区--------------------------*/
-	var latitude = 0;
-	var longitude = 0;
 	/*-----------------初始化广告--------------------------*/
 	initAdvertise();
 	/*-----------------初始化地理位置--------------------------*/
@@ -50,50 +54,38 @@ function errorFunction() {
 alert("定位失败，请打开gps，并给予懒了足够的权限");
 }
 */
-
-//获取主页商品数据
+//获取主页数据
 function getItemData() {
-	AV.Cloud.run('getItem', {
-		"latitude" : 31.717531,
-		"longitude" : 118.787853
-	}, {
-		success : function(result) {
-			loadItemMainPanel(result);
-		},
-		error : function(error) {
-			if (error.message == 2) {
-				$("#main_panel ul").remove();
-				var img = "<img id='no_sevice_tip_img_main_panel' src='images/no_service_tip.png' />";
-				$("#main_panel > div").append(img);
-			}
+	var Shop = AV.Object.extend("Shop");
+	var Item = AV.Object.extend("Item");
+	var innerQuery = new AV.Query(Shop);
+	innerQuery.withinKilometers("location", userGeo, 6);
+	var query = new AV.Query(Item);
+	query.matchesQuery("shop", innerQuery);
+	query.include("shop");
+	query.find({
+		success : function(items) {
+			loadItemMainPanel(items);
 		}
 	});
 }
 
 //加载主页商品
-function loadItemMainPanel(Items) {
-	var userGeo = new AV.GeoPoint({
-		latitude : 31.717531,
-		longitude : 118.787853
-	});
-	for (var i = 0; i < Items.length; i++) {
-		var itemGeo = new AV.GeoPoint({
-			latitude : Items[i].location.latitude,
-			longitude : Items[i].location.longitude
-		});
-		var li = "<li><a data-transition='pop' data-freight='" + userGeo.kilometersTo(itemGeo).toFixed(2) + "' data-id='" + Items[i].objectId + "' href='#buy_panel'><img src='" + Items[i].smallImage._url + "'><div><p>" + Items[i].name + "<span>" + Items[i].price + "元</span></p><p>" + Items[i].shopName + "<span>距您" + userGeo.kilometersTo(itemGeo).toFixed(2) + "km</span></p></div></a></li>";
+function loadItemMainPanel(items) {
+	for (var i = 0; i < items.length; i++) {
+		var itemGeo = items[i].get("shop").get("location");
+		var li = "<li><a data-transition='pop' data-freight='" + userGeo.kilometersTo(itemGeo).toFixed(2) + "' data-id='" + items[i].id + "' href='#buy_panel'><img src='" + items[i].get('smallImage').url() + "'><div><p>" + items[i].get('name') + "<span>" + items[i].get('price') + "元</span></p><p>" + items[i].get('shop').get('name') + "<span>距您" + userGeo.kilometersTo(itemGeo).toFixed(2) + "km</span></p></div></a></li>";
 		$("#main_panel ul").append(li);
-		$("#main_panel > div >  ul > li > a").eq(i).click(function() {
-			localStorage.setItem("itemId", $(this).attr("data-id"));
+		$("#main_panel > div >  ul > li > a").eq(i).bind("click", function(e) {
+			localStorage.setItem("itemId", $(e.currentTarget).attr("data-id"));
 		});
 	}
-
 }
 
 //初始化广告
 function initAdvertise() {
-	var ad = AV.Object.extend("Advertise");
-	var query = new AV.Query(ad);
+	var advertise = AV.Object.extend("Advertise");
+	var query = new AV.Query(advertise);
 	query.descending("createdAt");
 	query.equalTo("enable", true);
 	query.limit(4);
@@ -101,9 +93,9 @@ function initAdvertise() {
 		for (var i = 0; i < results.length; i++) {
 			var $img = $("<img></img>");
 			$img.attr("src", results[i].get("picture").url());
-			$("#slider").append($img);
+			$("#carousel").append($img);
 		}
-		$('#slider').nivoSlider();
+		init_carousel();
 	}, function(error) {
 		alert("Error: " + error.code + " " + error.message);
 	});
@@ -127,22 +119,39 @@ function buyPanelLoad() {
 function collect() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
-		var Favorite = AV.Object.extend("Favorite");
-		var favorite = new Favorite();
-		favorite.set("userId", currentUser.id);
-		favorite.set("itemId", localStorage.getItem('itemId'));
-		favorite.save().then(function(favorite) {
-			popup = af("#afui").popup("收藏成功");
-		}, function(error) {
-			if (error.message[error.message.length - 1] == 2)
-				popup = af("#afui").popup("您不需要重复收藏");
-			else
-				popup = af("#afui").popup("收藏失败");
+		var Item = AV.Object.extend("Item");
+		var query = new AV.Query(Item);
+		query.get(localStorage.getItem('itemId'), {
+			success : function(item) {
+				var relation = currentUser.relation("favorite");
+				relation.add(item);
+				currentUser.save().then(function() {
+					popup = af("#afui").popup("已收藏");
+				}, function(err) {
+					alert(err.message);
+				});
+			},
+			error : function(object, error) {
+				// The object was not retrieved successfully.
+				// error is a AV.Error with an error code and description.
+			}
 		});
+
+		// var Favorite = AV.Object.extend("Favorite");
+		// var favorite = new Favorite();
+		// favorite.set("userId", currentUser.id);
+		// favorite.set("itemId", localStorage.getItem('itemId'));
+		// favorite.save().then(function(favorite) {
+		// popup = af("#afui").popup("收藏成功");
+		// }, function(error) {
+		// if (error.message[error.message.length - 1] == 2)
+		// popup = af("#afui").popup("您不需要重复收藏");
+		// else
+		// popup = af("#afui").popup("收藏失败");
+		// });
 	} else {
 		//登录
 		popup = loginPop();
-		collect();
 	}
 }
 
@@ -248,28 +257,36 @@ function registerPop() {
 function CollectPanelLoad() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
-		AV.Cloud.run('getFavorite', {
-			"userId" : currentUser.id
-		}, {
-			success : function(result) {
-				$("#collect_panel ul").empty();
-				$('#collect_panel #no_collect_tip_img_collect_panel').remove();
-				for ( i = 0; i < result.length; i++) {
-					var li = "<li data-id='" + result[i].objectId + "' ><a data-transition='pop' href='#buy_panel'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this);return false;' /></div></a></li>";
-					$("#collect_panel ul").append(li);
-					$("#collect_panel ul > li > a").eq(i).click(function() {
-						localStorage.setItem("itemId", $(this).attr("data-id"));
-					});
-				}
-			},
-			error : function(error) {
-				$("#collect_panel ul").empty();
-				if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
-					var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
-					$("#collect_panel > div").append(img);
-				}
-			}
+		var relation = currentUser.relation("favorite");
+		relation.query().find().then(function(list) {
+			var a = list;
+		}, function(err) {
+			alert(err.message);
 		});
+
+		/*
+		 AV.Cloud.run('getFavorite', {
+		 "userId" : currentUser.id
+		 }, {
+		 success : function(result) {
+		 $("#collect_panel ul").empty();
+		 $('#collect_panel #no_collect_tip_img_collect_panel').remove();
+		 for ( i = 0; i < result.length; i++) {
+		 var li = "<li data-id='" + result[i].objectId + "' ><a data-transition='pop' href='#buy_panel'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this);return false;' /></div></a></li>";
+		 $("#collect_panel ul").append(li);
+		 $("#collect_panel ul > li").eq(i).click(function(e) {
+		 localStorage.setItem("itemId", $(e.currentTarget).attr("data-id"));
+		 });
+		 }
+		 },
+		 error : function(error) {
+		 $("#collect_panel ul").empty();
+		 if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
+		 var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
+		 $("#collect_panel > div").append(img);
+		 }
+		 }
+		 });*/
 	} else {
 		popup = loginPop();
 	}
@@ -279,28 +296,27 @@ function CollectPanelLoad() {
 function shoppingCartPanelLoad() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
-		AV.Cloud.run('getShoppingCart', {
-			"itemIds" : shoppoingCart
-		}, {
-			success : function(result) {
-				if (result.length == 0) {
-					$("#shopping_cart_panel ul").empty();
-					if ($('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').length == 0) {
-						var img = "<img id='no_shopping_cart_tip_img_collect_panel' src='images/no_shopping_cart_item.png' />";
-						$("#shopping_cart_panel > div").append(img);
-					}
-				} else {
-					$("#shopping_cart_panel ul").empty();
-					$('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').remove();
-					for ( i = 0; i < result.length; i++) {
-						var li = "<li " + "data-price='" + result[i].price + "' data-id='" + result[i].objectId + "'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p><p>" + result[i].price + "元</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
-						$("#shopping_cart_panel ul").append(li);
-					}
-					changePrice();
+		var Item = AV.Object.extend("Item");
+		var query = new AV.Query(Item);
+		query.include("shop");
+		query.containedIn("objectId", shoppoingCart);
+		query.find().then(function(results) {
+			if (results.length == 0) {
+				$("#shopping_cart_panel ul").empty();
+				if ($('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').length == 0) {
+					var img = "<img id='no_shopping_cart_tip_img_collect_panel' src='images/no_shopping_cart_item.png' />";
+					$("#shopping_cart_panel > div").append(img);
 				}
-			},
-			error : function(error) {
+			} else {
+				$("#shopping_cart_panel ul").empty();
+				$('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').remove();
+				for ( i = 0; i < results.length; i++) {
+					var li = "<li data-latitude='" + results[i].get('shop').get("location").latitude + "' data-longitude='" + results[i].get('shop').get("location").longitude + "'" + "data-price='" + results[i].get('price') + "' data-id='" + results[i].id + "'><div><img src='" + results[i].get('smallImage').url() + "' /><div><p>" + results[i].get('name') + "</p><p>" + results[i].get('price') + "元</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
+					$("#shopping_cart_panel ul").append(li);
+				}
+				changePrice();
 			}
+		}, function(error) {
 		});
 	} else {
 		popup = loginPop();
@@ -330,7 +346,14 @@ function changePrice() {
 		var $li = $("#shopping_cart_panel ul li").eq(i);
 		var value = $li.attr('data-price');
 		var piece = parseInt($li.find("span").html());
-		count += value * piece;
+		var itemGeo = new AV.GeoPoint({
+			latitude : $li.attr('data-latitude'),
+			longitude : $li.attr('data-longitude')
+		});
+		if (Math.ceil(userGeo.kilometersTo(itemGeo)) <= 6)
+			count = count + value * piece + freight[Math.ceil(userGeo.kilometersTo(itemGeo))];
+		else
+			popup = af("#afui").popup("程序崩溃，请联系QQ:2815859682");
 	}
 	$("#navbar  footer p span").html(count);
 }
@@ -426,7 +449,7 @@ function deleteCollect(node) {
 	}, function(favorite, error) {
 		popup = af("#afui").popup("失败");
 	});
-	$(node).parent().parent().click(function() {
+	$(node).parent().parent().bind("click", function() {
 		return false;
 	});
 }
@@ -482,7 +505,7 @@ function checkVersion() {
 				},
 				doneText : "立即更新",
 				doneCallback : function() {
-					window.open(version.get("package").url(), "_system");
+					window.open("http://app.codenow.cn/app/appdetail/39", "_system");
 				},
 				cancelOnly : false
 			});

@@ -12,17 +12,11 @@
 		<!--	<script src='http://webapi.amap.com/maps?v=1.3&key=b479ef221090d70865c1dd76fce0c276'></script>-->
 		<link rel="stylesheet" type="text/css" href="css/icons.css" />
 		<link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
-		<link rel="stylesheet" href="themes/default/default.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="themes/light/light.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="themes/dark/dark.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="themes/bar/bar.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
-		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/basic.css" title="default" />
 		<script type="text/javascript" charset="utf-8" src="./appframework.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="./ui/src/appframework.ui.js"></script>
+		<script type="text/javascript" charset="utf-8" src="./scripts/af.carousel.min.js"></script>
 		<script type="text/javascript" src="./scripts/jquery-1.9.0.min.js"></script>
-		<script type="text/javascript" src="jquery.nivo.slider.js"></script>
 		<script type="text/javascript" src="logic.js"></script>
 		<!--测试用 最后删除-->
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.desktopBrowsers.js"></script>
@@ -44,7 +38,34 @@
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
 		<!--<script text="text/javascript" src="cordova.js"></script>-->
 		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
-		<script type="text/javascript" charset="UTF-8"></script>
+		<script>
+			var carousel;
+			function init_carousel() {
+				carousel = af("#carousel").carousel({
+					pagingDiv : "carousel_dots",
+					pagingCssName : "carousel_paging2",
+					pagingCssNameSelected : "carousel_paging2_selected",
+					preventDefaults : false,
+					wrap : true //Set to false to disable the wrap around
+				});
+			}
+		</script>
+		<style>
+			.carousel_paging2 {
+				border-radius: 10px;
+				background: #ccc;
+				width: 10px;
+				height: 10px;
+				display: inline-block;
+			}
+			.carousel_paging2_selected {
+				border-radius: 10px;
+				background: #000;
+				width: 10px;
+				height: 10px;
+				display: inline-block;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="afui" class="bb">
@@ -81,9 +102,8 @@
 				</div>
 				<!------------------------------------------------------主页------------------------------------------------------------>
 				<div title="推荐" id="main_panel" class="panel" data-footer="none" data-header="topBar" selected="true">
-					<div class="slider-wrapper theme-default">
-						<div id="slider" class="nivoSlider"></div>
-					</div>
+					<div id="carousel" style="display:block;height:230px;width:100%;"></div>
+					<div id="carousel_dots" style="text-align: center; margin:auto;  display : table; clear: both; position: relative; top: 40%; z-index: 200"></div>
 					<ul></ul>
 				</div>
 				<!------------------------------------------------------购买------------------------------------------------------------>
