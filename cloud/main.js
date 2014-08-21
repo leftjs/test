@@ -29,6 +29,7 @@ AV.Cloud.define("getShoppingCart", function(request, response) {
 	var Item = AV.Object.extend("Item");
 	var query = new AV.Query(Item);
 	query.containedIn("objectId", request.params.itemIds);
+	query.include("shop");
 	query.find().then(function(results) {
 		response.success(results);
 	}, function(error) {
