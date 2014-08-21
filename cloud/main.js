@@ -24,18 +24,6 @@ AV.Cloud.define("getFavorite", function(request, response) {
 		response.error(error.message);
 	});
 });
-//获取购物车
-AV.Cloud.define("getShoppingCart", function(request, response) {
-	var Item = AV.Object.extend("Item");
-	var query = new AV.Query(Item);
-	query.containedIn("objectId", request.params.itemIds);
-	query.include("shop");
-	query.find().then(function(results) {
-		response.success(results);
-	}, function(error) {
-		response.error(error.message);
-	});
-});
 //下单处理函数
 AV.Cloud.define("placeOrder", function(request, response) {
 	var Order = AV.Object.extend("Order");
