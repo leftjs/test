@@ -24,7 +24,6 @@ AV.Cloud.define("getItem", function(request, response) {
 			var query = new AV.Query(Item);
 			query.containedIn("shopId", shopIds);
 			query.find().then(function(items) {
-				response.success(items);
 				for (var i = 0; i < items.length; i++) {
 					for (var j = 0; j < shops.length; j++) {
 						if (items[i].get("shopId") == shops[j].id) {
@@ -34,6 +33,7 @@ AV.Cloud.define("getItem", function(request, response) {
 						}
 					}
 				}
+				response.success(items);
 			}, function(error) {
 				response.error(error.message);
 			});
