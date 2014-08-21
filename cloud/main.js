@@ -19,7 +19,7 @@ AV.Cloud.define("getItem", function(request, response) {
 			for (var i = 0; i < shops.length; i++) {
 				shopIds.push(AV.Object.createObjectWithoutData("Shop", shops[i].id));
 			}
-			response.success(shopIds);
+			response.success(AV.Object.createObjectWithoutData("Shop", shops[i].id));
 			var Item = AV.Object.extend("Item");
 			var query = new AV.Query(Item);
 			query.containedIn("shopId", shopIds);
