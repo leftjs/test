@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<title>懒了</title>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -38,35 +39,11 @@
 		<script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
 		<!--<script text="text/javascript" src="cordova.js"></script>-->
 		<script src="https://cn.avoscloud.com/scripts/lib/av-0.3.4.min.js"></script>
+		<script src="service.js" type="text/javascript" charset="utf-8"></script>
 		<script>
-			var carousel;
-			function init_carousel() {
-				carousel = af("#carousel").carousel({
-					pagingDiv : "carousel_dots",
-					pagingCssName : "carousel_paging2",
-					pagingCssNameSelected : "carousel_paging2_selected",
-					preventDefaults : false,
-					wrap : true //Set to false to disable the wrap around
-				});
-			}
 		</script>
-		<style>
-			.carousel_paging2 {
-				border-radius: 10px;
-				background: #ccc;
-				width: 10px;
-				height: 10px;
-				display: inline-block;
-			}
-			.carousel_paging2_selected {
-				border-radius: 10px;
-				background: #000;
-				width: 10px;
-				height: 10px;
-				display: inline-block;
-			}
-		</style>
 	</head>
+
 	<body>
 		<div id="afui" class="bb">
 			<div id="content">
@@ -87,7 +64,7 @@
 					</footer>
 				</div>
 				<!------------------------------------------------------收藏------------------------------------------------------------>
-				<div title="收藏" id="collect_panel" class="panel" data-footer="none"data-load="CollectPanelLoad">
+				<div title="收藏" id="collect_panel" class="panel" data-footer="none" data-load="CollectPanelLoad">
 					<div>
 						<img src="images/collect_logo.png" />
 						<p>
@@ -96,7 +73,9 @@
 					</div>
 					<ul></ul>
 					<header id="topBar_collect_panel">
-						<a onclick="af.ui.goBack()"><img src="images/goBack.png" /></a>
+						<a onclick="af.ui.goBack()">
+							<img src="images/goBack.png" />
+						</a>
 						<h1>懒了</h1>
 					</header>
 				</div>
@@ -108,7 +87,9 @@
 				</div>
 				<!------------------------------------------------------购买------------------------------------------------------------>
 				<div title="购买" id="buy_panel" class="panel" data-footer="none" data-header="none" data-load="buyPanelLoad">
-					<a onclick="af.ui.goBack()"><img src="images/back.png" /></a>
+					<a onclick="af.ui.goBack()">
+						<img src="images/back.png" />
+					</a>
 					<img id="item_pic_big" src="images/loading.jpg" />
 					<p id="buy_panel_item_name"></p>
 					<p id="price_detail">
@@ -117,8 +98,34 @@
 					<p id="description"></p>
 					<div>
 						<img onClick="addToShoppingCart()" src="images/addCart.png" />
-						<img onclick="collect()" src="images/collect.png"/>
+						<img onclick="collect()" src="images/collect.png" />
 					</div>
+				</div>
+				<!--
+                	作者：2458853753@qq.com
+                	时间：2014-08-22
+                	描述：生活服务平台页面
+                -->
+				<div title="生活服务" id="service_panel" class="panel" data-header="topBar" style="width: 100%;">
+					<div>
+						<img src="images/bulb.jpg" onclick="changeBulb()" />
+						<img src="images/fruit.jpg" />
+						<img src="images/homemaking.jpg" />
+					</div>
+					<div>
+						<img src="images/zipper.jpg" />
+						<img src="images/wash_cloth.jpg" />
+						<img src="images/tools.jpg" />
+					</div>
+					<div>
+						<img src="images/windows.jpg" />
+						<img src="images/vip.jpg" onclick="P2P()" />
+						<img src="images/add_function.jpg" onclick="addService()" />
+					</div>
+					<footer id="service_panel_footer">
+						<p>不知道如何使用？请查看<span>服务条款</span>
+						</p>
+					</footer>
 				</div>
 				<!------------------------------------------------------用户中心------------------------------------------------------------>
 				<div title="用户中心" id="user_panel" class="panel" data-footer="none" data-header="topBar">
@@ -126,24 +133,35 @@
 						<img src="images/logo.png" />
 					</div>
 					<div id="user_panel_function_region">
-						<a><img src="images/about_nomal.png" onclick="aboutPop()" /></a>
-						<a><img src="images/fade_back_nomal.png" onclick="fadeBackPop()" /></a>
-						<a href="#collect_panel"><img src="images/collect_nomal.png" /></a>
+						<a>
+							<img src="images/about_nomal.png" onclick="aboutPop()" />
+						</a>
+						<a>
+							<img src="images/fade_back_nomal.png" onclick="fadeBackPop()" />
+						</a>
+						<a href="#collect_panel">
+							<img src="images/collect_nomal.png" />
+						</a>
 					</div>
 				</div>
 				<!------------------------------------------------------头部------------------------------------------------------------>
 				<header id="topBar">
-					<a id="menubadge" onclick="af.ui.toggleSideMenu()"><img src="images/menu.png" /></a>
+					<a id="menubadge" onclick="af.ui.toggleSideMenu()">
+						<img src="images/menu.png" />
+					</a>
 					<h1>懒了</h1>
 				</header>
 				<!------------------------------------------------------导航------------------------------------------------------------>
 				<nav>
 					<div>
-						<img src="images/logo.png"/>
+						<img src="images/logo.png" />
 					</div>
 					<ul class="list">
 						<li>
 							<a href="#main_panel">推荐</a>
+						</li>
+						<li>
+							<a href="#service_panel">懒了生活</a>
 						</li>
 						<li>
 							<a href="#shopping_cart_panel">购物车</a>
@@ -156,4 +174,5 @@
 			</div>
 		</div>
 	</body>
+
 </html>

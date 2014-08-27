@@ -12,14 +12,14 @@ var phoneNumber;
 var freight = [6, 6, 6, 10, 10, 15, 15];
 //公共位置数据
 var userGeo;
-// 等待PhoneGap加载
-//	document.addEventListener("deviceready", onDeviceReady, false);
+//轮播插件
+var carousel;
 $(document).ready(function() {
 	// 初始化 param1：应用 id、param2：应用 key
 	AV.initialize("hhdpk5vytgtwbc5rkque9oyvfu5mto19ays24u5x5l0pk89j", "d2zsij0i0wwkax18mlo56xsak4my1da58dsza2npmxfyg6r9");
 	userGeo = new AV.GeoPoint({
-		latitude : 31.717531,
-		longitude : 118.787853
+		latitude: 31.717531,
+		longitude: 118.787853
 	});
 	$("#afui").get(0).className = 'ios7';
 	/*-----------------初始化广告--------------------------*/
@@ -34,7 +34,7 @@ $(document).ready(function() {
 	getItemData();
 	checkVersion();
 });
-/*			function successFunction(position) {
+/*function successFunction(position) {
 latitude = position.coords.latitude;
 longitude = position.coords.longitude;
 -----------------初始化商品--------------------------
@@ -54,7 +54,18 @@ function errorFunction() {
 alert("定位失败，请打开gps，并给予懒了足够的权限");
 }
 */
-//获取主页数据
+//初始化轮播
+function init_carousel() {
+		carousel = af("#carousel").carousel({
+			pagingDiv: "carousel_dots",
+			pagingCssName: "carousel_paging2",
+			pagingCssNameSelected: "carousel_paging2_selected",
+			preventDefaults: false,
+			wrap: true //Set to false to disable the wrap around
+		});
+	}
+	//获取主页数据
+
 function getItemData() {
 	var Shop = AV.Object.extend("Shop");
 	var Item = AV.Object.extend("Item");
@@ -64,7 +75,7 @@ function getItemData() {
 	query.matchesQuery("shop", innerQuery);
 	query.include("shop");
 	query.find({
-		success : function(items) {
+		success: function(items) {
 			loadItemMainPanel(items);
 		}
 	});
@@ -122,7 +133,7 @@ function collect() {
 		var Item = AV.Object.extend("Item");
 		var query = new AV.Query(Item);
 		query.get(localStorage.getItem('itemId'), {
-			success : function(item) {
+			success: function(item) {
 				var relation = currentUser.relation("favorite");
 				relation.add(item);
 				currentUser.save().then(function() {
@@ -131,24 +142,8 @@ function collect() {
 					alert(err.message);
 				});
 			},
-			error : function(object, error) {
-				// The object was not retrieved successfully.
-				// error is a AV.Error with an error code and description.
-			}
+			error: function(object, error) {}
 		});
-
-		// var Favorite = AV.Object.extend("Favorite");
-		// var favorite = new Favorite();
-		// favorite.set("userId", currentUser.id);
-		// favorite.set("itemId", localStorage.getItem('itemId'));
-		// favorite.save().then(function(favorite) {
-		// popup = af("#afui").popup("收藏成功");
-		// }, function(error) {
-		// if (error.message[error.message.length - 1] == 2)
-		// popup = af("#afui").popup("您不需要重复收藏");
-		// else
-		// popup = af("#afui").popup("收藏失败");
-		// });
 	} else {
 		//登录
 		popup = loginPop();
@@ -161,7 +156,7 @@ function addToShoppingCart() {
 	if (currentUser) {
 		var flag = false;
 		var itemId = localStorage.getItem('itemId');
-		for ( i = 0; i < shoppoingCart.length; i++) {
+		for (i = 0; i < shoppoingCart.length; i++) {
 			if (itemId == shoppoingCart[i]) {
 				flag = true;
 				popup = af("#afui").popup("您不需要重复添加");
@@ -171,16 +166,15 @@ function addToShoppingCart() {
 		if (flag == false) {
 			shoppoingCart.push(itemId);
 			popup = af("#afui").popup({
-				title : "添加成功",
-				message : "您是否需要？",
-				cancelText : "继续购买",
-				cancelCallback : function() {
-				},
-				doneText : "前往付款",
-				doneCallback : function() {
+				title: "添加成功",
+				message: "您是否需要？",
+				cancelText: "继续购买",
+				cancelCallback: function() {},
+				doneText: "前往付款",
+				doneCallback: function() {
 					af.ui.loadContent("#shopping_cart_panel", false, false, false);
 				},
-				cancelOnly : false
+				cancelOnly: false
 			});
 		}
 	} else {
@@ -191,25 +185,24 @@ function addToShoppingCart() {
 //登录框
 function loginPop() {
 	return af("#afui").popup({
-		title : "用户登录",
-		message : "手机号: <input id='phone_number_login' type='text' class='af-ui-forms'><br />密码: <input id='password_login' type='text' class='af-ui-forms' style='webkit-text-security:disc'><br />还没有账号？请<span style='font-size:25px;color:blue;' onclick='registerPop()'>点击注册</span>",
-		cancelText : "取消",
-		cancelCallback : function() {
-		},
-		doneText : "登录",
-		doneCallback : function() {
+		title: "用户登录",
+		message: "手机号: <input id='phone_number_login' type='text' class='af-ui-forms'><br />密码: <input id='password_login' type='text' class='af-ui-forms' style='webkit-text-security:disc'><br />还没有账号？请<span style='font-size:25px;color:blue;' onclick='registerPop()'>点击注册</span>",
+		cancelText: "取消",
+		cancelCallback: function() {},
+		doneText: "登录",
+		doneCallback: function() {
 			AV.User.logIn($("#phone_number_login").val(), $("#password_login").val(), {
-				success : function(user) {
+				success: function(user) {
 					// Do stuff after successful login.
 					popup = af("#afui").popup("登录成功");
 				},
-				error : function(user, error) {
+				error: function(user, error) {
 					// The login failed. Check error to see why.
 					popup = af("#afui").popup("登录失败");
 				}
 			});
 		},
-		cancelOnly : false
+		cancelOnly: false
 	});
 }
 
@@ -217,13 +210,12 @@ function loginPop() {
 function registerPop() {
 	popup.hide();
 	popup = af("#afui").popup({
-		title : "用户注册",
-		message : "手机号: <input id='phone_number_register' type='text' class='af-ui-forms'><br />密码: <input id='password_register' type='text' class='af-ui-forms' style='webkit-text-security:disc'><br />确认密码: <input id='password_confirm_register'  type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
-		cancelText : "取消",
-		cancelCallback : function() {
-		},
-		doneText : "注册",
-		doneCallback : function() {
+		title: "用户注册",
+		message: "手机号: <input id='phone_number_register' type='text' class='af-ui-forms'><br />密码: <input id='password_register' type='text' class='af-ui-forms' style='webkit-text-security:disc'><br />确认密码: <input id='password_confirm_register'  type='text' class='af-ui-forms' style='webkit-text-security:disc'>",
+		cancelText: "取消",
+		cancelCallback: function() {},
+		doneText: "注册",
+		doneCallback: function() {
 			//处理注册的一些操作
 			if (!$('#phone_number_register').val().match(/^1[3|4|5|8][0-9]\d{4,8}$/)) {
 				alert("手机号码格式不正确");
@@ -238,18 +230,18 @@ function registerPop() {
 				user.set("numberVerified", false);
 				// 更新地理位置信息
 				user.signUp(null, {
-					success : function(user) {
+					success: function(user) {
 						// Hooray! Let them use the app now.
 						alert("注册成功");
 					},
-					error : function(user, error) {
+					error: function(user, error) {
 						// Show the error message somewhere and let the user try again.
 						alert("失败: " + error.code + " " + error.message);
 					}
 				});
 			}
 		},
-		cancelOnly : false
+		cancelOnly: false
 	});
 }
 
@@ -258,35 +250,27 @@ function CollectPanelLoad() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
 		var relation = currentUser.relation("favorite");
-		relation.query().find().then(function(list) {
-			var a = list;
+		relation.query().find().then(function(results) {
+			if (results.length) {
+				$("#collect_panel ul").empty();
+				$('#collect_panel #no_collect_tip_img_collect_panel').remove();
+				for (i = 0; i < results.length; i++) {
+					var li = "<li data-id='" + results[i].id + "' ><a data-transition='pop' href='#buy_panel'><div><img src='" + results[i].get("smallImage").url() + "' /><div><p>" + results[i].get("name") + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this);return false;' /></div></a></li>";
+					$("#collect_panel ul").append(li);
+					$("#collect_panel ul > li").eq(i).click(function(e) {
+						localStorage.setItem("itemId", $(e.currentTarget).attr("data-id"));
+					});
+				}
+			} else {
+				$("#collect_panel ul").empty();
+				if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
+					var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
+					$("#collect_panel > div").append(img);
+				}
+			}
 		}, function(err) {
-			alert(err.message);
+			log(err.message);
 		});
-
-		/*
-		 AV.Cloud.run('getFavorite', {
-		 "userId" : currentUser.id
-		 }, {
-		 success : function(result) {
-		 $("#collect_panel ul").empty();
-		 $('#collect_panel #no_collect_tip_img_collect_panel').remove();
-		 for ( i = 0; i < result.length; i++) {
-		 var li = "<li data-id='" + result[i].objectId + "' ><a data-transition='pop' href='#buy_panel'><div><img src='" + result[i].smallImage._url + "' /><div><p>" + result[i].name + "</p></div><img class='delete_collect_panel' src='images/delete.png' onclick='deleteCollect(this);return false;' /></div></a></li>";
-		 $("#collect_panel ul").append(li);
-		 $("#collect_panel ul > li").eq(i).click(function(e) {
-		 localStorage.setItem("itemId", $(e.currentTarget).attr("data-id"));
-		 });
-		 }
-		 },
-		 error : function(error) {
-		 $("#collect_panel ul").empty();
-		 if (!$('#collect_panel #no_collect_tip_img_collect_panel').attr('src')) {
-		 var img = "<img id='no_collect_tip_img_collect_panel' src='images/no_collect.png' />";
-		 $("#collect_panel > div").append(img);
-		 }
-		 }
-		 });*/
 	} else {
 		popup = loginPop();
 	}
@@ -310,14 +294,13 @@ function shoppingCartPanelLoad() {
 			} else {
 				$("#shopping_cart_panel ul").empty();
 				$('#shopping_cart_panel #no_shopping_cart_tip_img_collect_panel').remove();
-				for ( i = 0; i < results.length; i++) {
+				for (i = 0; i < results.length; i++) {
 					var li = "<li data-latitude='" + results[i].get('shop').get("location").latitude + "' data-longitude='" + results[i].get('shop').get("location").longitude + "'" + "data-price='" + results[i].get('price') + "' data-id='" + results[i].id + "'><div><img src='" + results[i].get('smallImage').url() + "' /><div><p>" + results[i].get('name') + "</p><p>" + results[i].get('price') + "元</p></div><img class='delete_shopping_cart_panel' src='images/delete.png' onclick='deleteShoppingCart(this)' /></div><div>我要买<img src='images/minus.png' onclick='changeItem(this,0)'/><span>1</span><img src='images/plus.png' onclick='changeItem(this,1)' />件</div></li>";
 					$("#shopping_cart_panel ul").append(li);
 				}
 				changePrice();
 			}
-		}, function(error) {
-		});
+		}, function(error) {});
 	} else {
 		popup = loginPop();
 	}
@@ -342,13 +325,13 @@ function changeItem(node, flag) {
 //购物车计算总价
 function changePrice() {
 	var count = 0;
-	for ( i = 0; i < $("#shopping_cart_panel ul li").length; i++) {
+	for (i = 0; i < $("#shopping_cart_panel ul li").length; i++) {
 		var $li = $("#shopping_cart_panel ul li").eq(i);
 		var value = $li.attr('data-price');
 		var piece = parseInt($li.find("span").html());
 		var itemGeo = new AV.GeoPoint({
-			latitude : $li.attr('data-latitude'),
-			longitude : $li.attr('data-longitude')
+			latitude: $li.attr('data-latitude'),
+			longitude: $li.attr('data-longitude')
 		});
 		if (Math.ceil(userGeo.kilometersTo(itemGeo)) <= 6)
 			count = count + value * piece + freight[Math.ceil(userGeo.kilometersTo(itemGeo))];
@@ -369,8 +352,8 @@ function placeOrder() {
 		order.set("userId", currentUser.id);
 		order.set("state", 1);
 		order.set("location", new AV.GeoPoint({
-			latitude : 31.717531,
-			longitude : 118.787853
+			latitude: 31.717531,
+			longitude: 118.787853
 		}));
 		order.save().then(function(order) {
 			var OrderDetail = AV.Object.extend("OrderDetail");
@@ -423,7 +406,7 @@ function result(id, result) {
 
 //删除购物车函数
 function deleteShoppingCart(node) {
-	for ( i = 0; i < shoppoingCart.length; i++) {
+	for (i = 0; i < shoppoingCart.length; i++) {
 		if ($(node).parent().parent().attr('data-id') == shoppoingCart[i]) {
 			shoppoingCart.splice(i, 1);
 		}
@@ -438,16 +421,23 @@ function deleteShoppingCart(node) {
 
 //删除收藏函数
 function deleteCollect(node) {
-	var currentUser = AV.User.current();
-	var Favorite = AV.Object.extend("Favorite");
-	var query = new AV.Query(Favorite);
-	query.equalTo("userId", currentUser.id);
-	query.equalTo("itemId", $(node).parent().parent().attr('id'));
-	query.find().then(function(favorite) {
-		AV.Object.destroyAll(favorite);
-		$(node).parent().parent().remove();
-	}, function(favorite, error) {
-		popup = af("#afui").popup("失败");
+	var Item = AV.Object.extend("Item");
+	var query = new AV.Query(Item);
+	query.get($(node).parent().parent().parent().attr('data-id'), {
+		success: function(item) {
+			var currentUser = AV.User.current();
+			var relation = currentUser.relation("favorite");
+			relation.remove(item);
+			currentUser.save().then(function() {
+				$(node).parent().parent().parent().remove();
+			}, function(err) {
+				popup = af("#afui").popup("失败");
+				log(err.message);
+			});
+		},
+		error: function(object, error) {
+			log(error.message);
+		}
 	});
 	$(node).parent().parent().bind("click", function() {
 		return false;
@@ -459,13 +449,12 @@ function fadeBackPop() {
 	var currentUser = AV.User.current();
 	if (currentUser) {
 		popup = af("#afui").popup({
-			title : "用户反馈",
-			message : "内容: <textarea id='fade_back_content' rows='10' cols='30' style='webkit-text-security:disc;height:200px;' ></textarea>",
-			cancelText : "取消",
-			cancelCallback : function() {
-			},
-			doneText : "反馈",
-			doneCallback : function() {
+			title: "用户反馈",
+			message: "内容: <textarea id='fade_back_content' rows='10' cols='30' style='webkit-text-security:disc;height:200px;' ></textarea>",
+			cancelText: "取消",
+			cancelCallback: function() {},
+			doneText: "反馈",
+			doneCallback: function() {
 				if ($("#fade_back_content").val() == "")
 					alert("请输入内容");
 				else {
@@ -480,7 +469,7 @@ function fadeBackPop() {
 					});
 				}
 			},
-			cancelOnly : false
+			cancelOnly: false
 		});
 	} else {
 		popup = loginPop();
@@ -489,8 +478,9 @@ function fadeBackPop() {
 
 //关于我们
 function aboutPop() {
-	popup = af("#afui").popup("艺术家团队是南京邮电大学通达学院一支大学生创业团队，立志为您打造不一样的网上购物体验，我们后续还会推出除食品外的其它商品，让您足不出户，买遍全城。联系QQ：2815859682");
-}
+		popup = af("#afui").popup("艺术家团队是南京邮电大学通达学院一支大学生创业团队，立志为您打造不一样的网上购物体验，我们后续还会推出除食品外的其它商品，让您足不出户，买遍全城。联系QQ：2815859682");
+	}
+	//检查更新
 
 function checkVersion() {
 	var Version = AV.Object.extend("Version");
@@ -498,19 +488,23 @@ function checkVersion() {
 	query.first().then(function(version) {
 		if (version.get("code") > 1) {
 			popup = af("#afui").popup({
-				title : "需要更新",
-				message : "更新内容:" + version.get("description"),
-				cancelText : "取消",
-				cancelCallback : function() {
-				},
-				doneText : "立即更新",
-				doneCallback : function() {
+				title: "需要更新",
+				message: "更新内容:" + version.get("description"),
+				cancelText: "取消",
+				cancelCallback: function() {},
+				doneText: "立即更新",
+				doneCallback: function() {
 					window.open("http://app.codenow.cn/app/appdetail/39", "_system");
 				},
-				cancelOnly : false
+				cancelOnly: false
 			});
 		}
 	}, function(error) {
 		alert("Error: " + error.code + " " + error.message);
 	});
+}
+
+//输出日志
+function log(s) {
+	console.log(s);
 }
